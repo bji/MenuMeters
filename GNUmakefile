@@ -1,4 +1,9 @@
 
+# Needed for space handling in paths
+empty :=
+space := $(empty) $(empty)
+safedir = $(subst _GNU_MAKEFILE_SPACE_,$(space),$(dir $(subst $(space),_GNU_MAKEFILE_SPACE_,$1)))
+
 CFLAGS :=
 
 # These compiler and flags were determined by looking at the commands
@@ -37,70 +42,109 @@ LINKFLAGS := $(LINKFLAGS) -arch x86_64 -arch i386
 
 LINKFLAGS := $(LINKFLAGS) -F /System/Library/PrivateFrameworks
 
-OBJECTS := obj/Common/MenuMeterDefaults.o \
-           obj/Common/MenuMeterPowerMate.o \
-           obj/PrefPane/MenuMetersPref.o
-
 .PHONY: all
-all: bin/InstallTool bin/MenuMeters bin/MenuMeterCPU bin/MenuMeterDisk \
-     bin/MenuMeterMem bin/MenuMeterNet bin/MenuMeterDefaults \
-     bin/MenuMeters_Installer
+all: installer
 
-obj/%.o: %.m
-	@mkdir -p $(dir $@)
-	gcc $(CFLAGS) -c $^ -o $@
+.PHONY: binaries
+binaries: InstallTool MenuMeters MenuMeterCPU MenuMeterDisk MenuMeterMem \
+          MenuMeterNet MenuMeterDefaults MenuMeters\ Installer
 
-bin/InstallTool: obj/Installer/InstallTool.o
-	@mkdir -p $(dir $@)
+.PHONY: nibs
+nibs: build/nib/Installer/Resources/English.lproj/Installer.nib \
+      build/nib/Installer/Resources/French.lproj/Installer.nib \
+      build/nib/Installer/Resources/German.lproj/Installer.nib \
+      build/nib/Installer/Resources/Italian.lproj/Installer.nib \
+      build/nib/Installer/Resources/Japanese.lproj/Installer.nib \
+      build/nib/Installer/Resources/nl.lproj/Installer.nib \
+      build/nib/Installer/Resources/zh_CN.lproj/Installer.nib \
+      build/nib/PrefPane/English.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/French.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/German.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/Italian.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/Japanese.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/nl.lproj/MenuMetersPref.nib \
+      build/nib/PrefPane/zh_CN.lproj/MenuMetersPref.nib
+
+build/obj/%.o: %.m
+	@mkdir -p "$(call safedir,$@)"
+	gcc $(CFLAGS) -c "$^" -o "$@"
+
+build/nib/%.nib: %.nib
+	@mkdir -p "$(call safedir,$@)"
+	/usr/bin/ibtool --strip "$@" --output-format human-readable-text "$^"
+
+.PHONY: InstallTool
+InstallTool: build/bin/InstallTool
+build/bin/InstallTool: build/obj/Installer/InstallTool.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc $(LINKFLAGS) -o $@ $^ -framework Cocoa
 
-bin/MenuMeterDefaults: obj/Common/MenuMeterDefaults.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeterDefaults
+MenuMeterDefaults: build/bin/MenuMeterDefaults
+build/bin/MenuMeterDefaults: build/obj/Common/MenuMeterDefaults.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework Cocoa
 
-bin/MenuMeters: obj/Common/MenuMeterDefaults.o \
-                obj/Common/MenuMeterPowerMate.o \
-                obj/PrefPane/MenuMetersPref.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeters
+MenuMeters: build/bin/MenuMeters
+build/bin/MenuMeters: build/obj/Common/MenuMeterDefaults.o \
+                      build/obj/Common/MenuMeterPowerMate.o \
+                      build/obj/PrefPane/MenuMetersPref.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework Cocoa -framework IOKit -framework SystemConfiguration -framework PreferencePanes
 
-bin/MenuMeterCPU: obj/MenuExtras/MenuMeterCPU/MenuMeterCPUView.o \
-                  obj/MenuExtras/MenuMeterCPU/MenuMeterCPUExtra.o \
-                  obj/MenuExtras/MenuMeterCPU/MenuMeterCPUStats.o \
-                  obj/MenuExtras/MenuMeterCPU/MenuMeterUptime.o \
-                  obj/Common/MenuMeterPowerMate.o \
-                  obj/Common/MenuMeterWorkarounds.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeterCPU
+MenuMeterCPU: build/bin/MenuMeterCPU
+build/bin/MenuMeterCPU: build/obj/MenuExtras/MenuMeterCPU/MenuMeterCPUView.o \
+                        build/obj/MenuExtras/MenuMeterCPU/MenuMeterCPUExtra.o \
+                        build/obj/MenuExtras/MenuMeterCPU/MenuMeterCPUStats.o \
+                        build/obj/MenuExtras/MenuMeterCPU/MenuMeterUptime.o \
+                        build/obj/Common/MenuMeterPowerMate.o \
+                        build/obj/Common/MenuMeterWorkarounds.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework SystemUIPlugin -framework Cocoa -framework Carbon -framework IOKit
 
-bin/MenuMeterDisk: obj/MenuExtras/MenuMeterDisk/MenuMeterDiskView.o \
-                   obj/MenuExtras/MenuMeterDisk/MenuMeterDiskExtra.o \
-                   obj/MenuExtras/MenuMeterDisk/MenuMeterDiskIO.o \
-                   obj/MenuExtras/MenuMeterDisk/MenuMeterDiskSpace.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeterDisk
+MenuMeterDisk: build/bin/MenuMeterDisk
+build/bin/MenuMeterDisk: \
+                      build/obj/MenuExtras/MenuMeterDisk/MenuMeterDiskView.o \
+                      build/obj/MenuExtras/MenuMeterDisk/MenuMeterDiskExtra.o \
+                      build/obj/MenuExtras/MenuMeterDisk/MenuMeterDiskIO.o \
+                      build/obj/MenuExtras/MenuMeterDisk/MenuMeterDiskSpace.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework SystemUIPlugin -framework Cocoa -framework Carbon -framework IOKit
 
-bin/MenuMeterNet: obj/MenuExtras/MenuMeterNet/MenuMeterNetExtra.o \
-                  obj/MenuExtras/MenuMeterNet/MenuMeterNetView.o \
-                  obj/MenuExtras/MenuMeterNet/MenuMeterNetStats.o \
-                  obj/MenuExtras/MenuMeterNet/MenuMeterNetConfig.o \
-                  obj/MenuExtras/MenuMeterNet/MenuMeterNetPPP.o \
-                  obj/Common/MenuMeterWorkarounds.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeterNet
+MenuMeterNet: build/bin/MenuMeterNet
+build/bin/MenuMeterNet: build/obj/MenuExtras/MenuMeterNet/MenuMeterNetExtra.o \
+                        build/obj/MenuExtras/MenuMeterNet/MenuMeterNetView.o \
+                        build/obj/MenuExtras/MenuMeterNet/MenuMeterNetStats.o \
+                        build/obj/MenuExtras/MenuMeterNet/MenuMeterNetConfig.o \
+                        build/obj/MenuExtras/MenuMeterNet/MenuMeterNetPPP.o \
+                        build/obj/Common/MenuMeterWorkarounds.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework SystemUIPlugin -framework Cocoa -framework IOKit -framework SystemConfiguration
 
-bin/MenuMeterMem: obj/MenuExtras/MenuMeterMem/MenuMeterMemView.o \
-                  obj/MenuExtras/MenuMeterMem/MenuMeterMemExtra.o \
-                  obj/MenuExtras/MenuMeterMem/MenuMeterMemStats.o \
-                  obj/Common/MenuMeterWorkarounds.o
-	@mkdir -p $(dir $@)
+.PHONY: MenuMeterMem
+MenuMeterMem: build/bin/MenuMeterMem
+build/bin/MenuMeterMem: build/obj/MenuExtras/MenuMeterMem/MenuMeterMemView.o \
+                        build/obj/MenuExtras/MenuMeterMem/MenuMeterMemExtra.o \
+                        build/obj/MenuExtras/MenuMeterMem/MenuMeterMemStats.o \
+                        build/obj/Common/MenuMeterWorkarounds.o
+	@mkdir -p "$(call safedir,$@)"
 	gcc -bundle $(LINKFLAGS) -o $@ $^ -framework SystemUIPlugin -framework Cocoa -framework Carbon
 
-bin/MenuMeters_Installer: obj/Installer/InstallerApp.o \
-                          obj/Installer/InstallerAppMain.o
-	@mkdir -p $(dir $@)
-	gcc $(LINKFLAGS) -o $@ $^ -framework Cocoa -framework Security
+.PHONY: MenuMeters\ Installer
+MenuMeters\ Installer: build/bin/MenuMeters\ Installer
+build/bin/MenuMeters\ Installer: build/obj/Installer/InstallerApp.o \
+                                 build/obj/Installer/InstallerAppMain.o
+	@mkdir -p "$(dir $@)"
+	gcc $(LINKFLAGS) -o "$@" $^ -framework Cocoa -framework Security
 
 .PHONY: clean
 clean:
-	rm -rf obj bin
+	rm -rf build
+
+# Moved installer targets into a separate Makefile to make this file
+# easier to read and deal with
+include Installer.gmake

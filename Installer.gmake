@@ -1,0 +1,266 @@
+# -*- makefile -*-
+
+INSTROOT := build/MenuMeters\ Installer.app/Contents
+
+.PHONY: installer
+installer: \
+    $(INSTROOT)/Info.plist \
+    $(INSTROOT)/MacOS/MenuMeters\ Installer \
+    $(INSTROOT)/PkgInfo \
+    $(INSTROOT)/Resources/English.lproj/Installer.nib \
+    $(INSTROOT)/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/French.lproj/Installer.nib \
+    $(INSTROOT)/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/German.lproj/Installer.nib \
+    $(INSTROOT)/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/InfoPlist.strings \
+    $(INSTROOT)/Resources/Installer.icns \
+    $(INSTROOT)/Resources/InstallTool \
+    $(INSTROOT)/Resources/Italian.lproj/Installer.nib \
+    $(INSTROOT)/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/Japanese.lproj/Installer.nib \
+    $(INSTROOT)/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/MacOS/MenuMeters \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/CubeRootScale.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/English.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/French.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/German.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/InfoPlist.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/Italian.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/Japanese.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/LinearScale.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/LogScale.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuCracker.menu/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuCracker.menu/Contents/MacOS/MenuCracker \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuCracker.menu/Contents/Resources/MenuCracker.icns \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/MacOS/MenuMeterCPU \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/zh_CN.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDefaults.bundle/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDefaults.bundle/Contents/MacOS/MenuMeterDefaults \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/MacOS/MenuMeterDisk \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Aqua\ LightsIdle.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Aqua\ LightsRead.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Aqua\ LightsReadWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Aqua\ LightsWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/ArrowsIdle.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/ArrowsRead.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/ArrowsReadWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/ArrowsWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Color\ ArrowsIdle.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Color\ ArrowsRead.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Color\ ArrowsReadWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Color\ ArrowsWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Disk\ ArrowsRead.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Disk\ ArrowsReadWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Disk\ ArrowsWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/LightsIdle.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/LightsRead.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/LightsReadWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/LightsWrite.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/zh_CN.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/MacOS/MenuMeterMem \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/zh_CN.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Info.plist \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/MacOS/MenuMeterNet \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/English.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/French.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/German.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/Italian.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/Japanese.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/zh_CN.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMetersPref.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/nl.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/SquareRootScale.tiff \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/zh_CN.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/zh_CN.lproj/MenuMetersPref.nib \
+    $(INSTROOT)/Resources/nl.lproj/Installer.nib \
+    $(INSTROOT)/Resources/nl.lproj/Localizable.strings \
+    $(INSTROOT)/Resources/zh_CN.lproj/Installer.nib \
+    $(INSTROOT)/Resources/zh_CN.lproj/Localizable.strings
+
+
+# Binary installer targets
+
+$(INSTROOT)/Resources/InstallTool: build/bin/InstallTool
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/MacOS/MenuMeters\ Installer: build/bin/MenuMeters\ Installer
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/MacOS/MenuMeters: build/bin/MenuMeters
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/MacOS/MenuMeterCPU: build/bin/MenuMeterCPU
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDefaults.bundle/Contents/MacOS/MenuMeterDefaults: build/bin/MenuMeterDefaults
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/MacOS/MenuMeterDisk: build/bin/MenuMeterDisk
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/MacOS/MenuMeterMem: build/bin/MenuMeterMem
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/MacOS/MenuMeterNet: build/bin/MenuMeterNet
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# Installer PkgInfo target
+
+$(INSTROOT)/PkgInfo:
+	@mkdir -p "$(call safedir,$@)"
+	@echo "APPL????" > "$@"
+
+# Installer Info.plist target
+
+$(INSTROOT)/Info.plist: Installer/Resources/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# Installer strings files target
+
+$(INSTROOT)/Resources/%.strings: Installer/Resources/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+# Installer nib files target
+
+$(INSTROOT)/Resources/%.nib: build/nib/Installer/Resources/%.nib
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+# Installer image files target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/%.tiff: PrefPane/Scales/%.tiff
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+# Installer image icon files
+
+$(INSTROOT)/Resources/%.icns: Installer/Resources/%.icns
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# PrefPane Info.plist target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Info.plist: PrefPane/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# PrefPane string files target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/%.strings: PrefPane/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+# PrefPane nib files target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/%.nib: build/nib/PrefPane/%.nib
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+# PrefPane image files target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/%.tiff: PrefPane/Icon/%.tiff
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# Extras Info.plist targets
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Info.plist: MenuExtras/MenuMeterCPU/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Info.plist: MenuExtras/MenuMeterDisk/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Info.plist: MenuExtras/MenuMeterMem/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Info.plist: MenuExtras/MenuMeterNet/Info.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# Extras string files targets
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterCPU.menu/Contents/Resources/%.strings: MenuExtras/MenuMeterCPU/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/%.strings: MenuExtras/MenuMeterDisk/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterMem.menu/Contents/Resources/%.strings: MenuExtras/MenuMeterMem/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterNet.menu/Contents/Resources/%.strings: MenuExtras/MenuMeterNet/%.strings
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# MenuMeterDisk.menu image file targets
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDisk.menu/Contents/Resources/%.tiff: MenuExtras/MenuMeterDisk/Icons/%.tiff
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# MenuMeterDefaults Info.plist target
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/MenuMeterDefaults.bundle/Contents/Info.plist: Common/Resources/DefaultsBundleInfo.plist
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+
+# MenuCracker installer targets - copied from pre-built binaries in the source
+
+$(INSTROOT)/Resources/MenuMeters.prefPane/Contents/Resources/%: MenuCracker/%
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
