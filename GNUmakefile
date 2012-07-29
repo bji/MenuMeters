@@ -141,6 +141,11 @@ build/bin/MenuMeters\ Installer: build/obj/Installer/InstallerApp.o \
 	@mkdir -p "$(dir $@)"
 	gcc $(LINKFLAGS) -o "$@" $^ -framework Cocoa -framework Security
 
+.PHONY: dmg
+dmg: build/MenuMeters\ Installer.dmg
+build/MenuMeters\ Installer.dmg: installer
+	/usr/bin/hdiutil create -ov -srcfolder "build/MenuMeters Installer.app" -volname "MenuMeters 1.BJI" "build/MenuMeters"
+
 .PHONY: clean
 clean:
 	rm -rf build
