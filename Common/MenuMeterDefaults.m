@@ -529,9 +529,9 @@
 	if (![fileManager fileExistsAtPath:[prefFolderPath stringByAppendingPathComponent:newPath]] &&
 		[fileManager fileExistsAtPath:[prefFolderPath stringByAppendingPathComponent:oldPath]]) {
 		// Move the file
-		[fileManager movePath:[prefFolderPath stringByAppendingPathComponent:oldPath]
+		[fileManager moveItemAtPath:[prefFolderPath stringByAppendingPathComponent:oldPath]
 					   toPath:[prefFolderPath stringByAppendingPathComponent:newPath]
-					  handler:nil];
+					  error:nil];
 	}
 
 } // _migratePrefFile

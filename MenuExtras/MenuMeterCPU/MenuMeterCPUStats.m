@@ -235,7 +235,7 @@
 
 } // loadAverage
 
-- (NSArray *)currentLoad  {
+- (NSArray *)currentLoad: (BOOL) sorted  {
 
 	// Read the current ticks
 	natural_t processorCount;
@@ -246,7 +246,11 @@
 	if (err != KERN_SUCCESS) return nil;
 
 	// We have valid info so build return array
-	NSMutableArray *loadInfo = [NSMutableArray array];
+
+    // First, build parallel arrays of user and system load values
+    NSMutableArray *loadUser = [NSMutableArray array];
+    NSMutableArray *loadSystem = [NSMutableArray array];
+
 	for (natural_t i = 0; i < processorCount; i++) {
 
 		// Calc load types and totals, with guards against 32-bit overflow
@@ -283,12 +287,46 @@
 			total = 1;
 		}
 
-		[loadInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								[NSNumber numberWithFloat:((float)system / (float)total)], @"system",
-								[NSNumber numberWithFloat:((float)user / (float)total)], @"user",
-								nil]];
+        [loadUser addObject:[NSNumber numberWithFloat:((float)user / (float)total)]];
+        [loadSystem addObject:[NSNumber numberWithFloat:((float)system / (float)total)]];
 	}
 
+    // Sort the load if necessary
+    if (sorted == YES) {
+        NSMutableArray *sortedUser = [NSMutableArray array];
+        NSMutableArray *sortedSystem = [NSMutableArray array];
+        
+        for (natural_t i = 0; i < processorCount; i++) {
+            float maxSum = 0.0f;
+            natural_t maxIndex = 0;
+            for (natural_t j = 0; j < (processorCount - i); j++) {
+                float sum = [[loadUser objectAtIndex: j] floatValue] + [[loadSystem objectAtIndex: j] floatValue];
+                if (sum > maxSum) {
+                    maxSum = sum;
+                    maxIndex = j;
+                }
+            }
+            [sortedUser addObject: [loadUser objectAtIndex: maxIndex]];
+            [sortedSystem addObject: [loadSystem objectAtIndex: maxIndex]];
+            [loadUser removeObjectAtIndex: maxIndex];
+            [loadSystem removeObjectAtIndex: maxIndex];
+        }
+
+        loadUser = sortedUser;
+        loadSystem = sortedSystem;
+    }
+
+    // Build the loadInfo dictionaries from the (possibly sorted) user and system load values
+
+	NSMutableArray *loadInfo = [NSMutableArray array];
+
+	for (natural_t i = 0; i < processorCount; i++) {
+		[loadInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                             [loadSystem objectAtIndex:i], @"system",
+                                             [loadUser objectAtIndex:i], @"user",
+                                          nil]];
+    }
+    
 	// Copy the new data into previous
 	for (natural_t i = 0; i < processorCount; i++) {
 		for (natural_t j = 0; j < CPU_STATE_MAX; j++) {

@@ -61,6 +61,6 @@
 // Load info
 - (NSString *)currentProcessorTasks;
 - (NSString *)loadAverage;
-- (NSArray *)currentLoad;
+- (NSArray *)currentLoad: (BOOL) sorted;
 
 @end

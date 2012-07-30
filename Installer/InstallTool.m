@@ -47,7 +47,7 @@ BOOL uninstallLibraryPrefPane(void) {
 	// Main library
 	if ([fileMan fileExistsAtPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName]]) {
 		LOGDEBUG(@"InstallTool: PrefPane uninstall found target file in main Library.");
-		if ([fileMan removeFileAtPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName] handler:nil]) {
+		if ([fileMan removeItemAtPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName] error:nil]) {
 			LOGDEBUG(@"InstallTool: PrefPane uninstalled from main Library.");
 			return YES;
 		} else {
@@ -66,7 +66,7 @@ BOOL uninstallUserPrefPane(void) {
 	// User library
 	if ([fileMan fileExistsAtPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName]]) {
 		LOGDEBUG(@"InstallTool: PrefPane uninstall found target file in user's Library.");
-		if ([fileMan removeFileAtPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName] handler:nil]) {
+		if ([fileMan removeItemAtPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName] error:nil]) {
 			LOGDEBUG(@"InstallTool: PrefPane uninstalled from user's Library.");
 			return YES;
 		} else {
@@ -102,6 +102,7 @@ BOOL installLibraryPrefPane(void) {
 	if (![fileMan fileExistsAtPath:kLibraryPrefPanePath]) {
 		LOGDEBUG(@"InstallTool: PrefPane install must create \"%@\".", kLibraryPrefPanePath);
 		if (![fileMan createDirectoryAtPath:kLibraryPrefPanePath
+                                 withIntermediateDirectories:YES
 								 attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 												@"root",
 												NSFileOwnerAccountName,
@@ -109,17 +110,17 @@ BOOL installLibraryPrefPane(void) {
 												NSFileGroupOwnerAccountName,
 												[NSNumber numberWithUnsignedInt:0777],
 												NSFilePosixPermissions,
-												nil]]) {
+												nil]
+                                      error:nil]) {
 			LOGERROR(@"InstallTool error: PrefPane install unable to create \"%@\".", kLibraryPrefPanePath);
 			return NO;
 		}
 	}
-	if(![fileMan copyPath:[toolPath stringByAppendingPathComponent:kPrefPaneName]
-				   toPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName] handler:nil]) {
+    if(![fileMan copyItemAtURL:[NSURL fileURLWithPath:[toolPath stringByAppendingPathComponent:kPrefPaneName]] toURL:[NSURL fileURLWithPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName]] error:nil]) {
 		LOGERROR(@"InstallTool error: Library PrefPane installation failed.");
 		return NO;
 	}
-	if (![fileMan changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+	if (![fileMan setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 											@"root",
 											NSFileOwnerAccountName,
 											@"admin",
@@ -127,7 +128,7 @@ BOOL installLibraryPrefPane(void) {
 											[NSNumber numberWithUnsignedInt:0775],
 											NSFilePosixPermissions,
 											nil]
-								atPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName]]) {
+                   ofItemAtPath:[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName] error:nil]) {
 		LOGERROR(@"InstallTool error: Library PrefPane top level attribute change failed.");
 		return NO;
 	}
@@ -138,7 +139,7 @@ BOOL installLibraryPrefPane(void) {
 	}
 	NSString *subPath = nil;
 	while ((subPath = [dirEnum nextObject])) {
-		if (![fileMan changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+		if (![fileMan setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 												@"root",
 												NSFileOwnerAccountName,
 												@"admin",
@@ -146,8 +147,8 @@ BOOL installLibraryPrefPane(void) {
 												[NSNumber numberWithUnsignedInt:0775],
 												NSFilePosixPermissions,
 												nil]
-									atPath:[[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName]
-												stringByAppendingPathComponent:subPath]]) {
+									ofItemAtPath:[[kLibraryPrefPanePath stringByAppendingPathComponent:kPrefPaneName]
+                                                     stringByAppendingPathComponent:subPath] error:nil]) {
 			LOGERROR(@"InstallTool error: Library PrefPane attribute change failed for subitem \"%@\".", subPath);
 			return NO;
 		}
@@ -180,24 +181,26 @@ BOOL installUserPrefPane(void) {
 	if (![fileMan fileExistsAtPath:kUserPrefPanePath]) {
 		LOGDEBUG(@"InstallTool: PrefPane install must create \"%@\".", kUserPrefPanePath);
 		if (![fileMan createDirectoryAtPath:kUserPrefPanePath
+                withIntermediateDirectories:YES
 								 attributes:[NSDictionary dictionaryWithObjectsAndKeys:
 												[NSNumber numberWithUnsignedInt:0755],
 												NSFilePosixPermissions,
-												nil]]) {
+												nil]
+                                      error:nil]) {
 			LOGERROR(@"InstallTool error: PrefPane install unable to create \"%@\".", kUserPrefPanePath);
 			return NO;
 		}
 	}
-	if(![fileMan copyPath:[toolPath stringByAppendingPathComponent:kPrefPaneName]
-				   toPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName] handler:nil]) {
+	if(![fileMan copyItemAtURL:[NSURL fileURLWithPath:[toolPath stringByAppendingPathComponent:kPrefPaneName]]
+                         toURL:[NSURL fileURLWithPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName]] error:nil]) {
 		LOGERROR(@"InstallTool error: user PrefPane installation failed.");
 		return NO;
 	}
-	if (![fileMan changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+	if (![fileMan setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 											[NSNumber numberWithUnsignedInt:0755],
 											NSFilePosixPermissions,
 											nil]
-								atPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName]]) {
+                   ofItemAtPath:[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName] error:nil]) {
 		LOGERROR(@"InstallTool error: user PrefPane top level attribute change failed.");
 		return NO;
 	}
@@ -208,12 +211,12 @@ BOOL installUserPrefPane(void) {
 	}
 	NSString *subPath = nil;
 	while ((subPath = [dirEnum nextObject])) {
-		if (![fileMan changeFileAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+		if (![fileMan setAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 												[NSNumber numberWithUnsignedInt:0755],
 												NSFilePosixPermissions,
 												nil]
-									atPath:[[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName]
-												stringByAppendingPathComponent:subPath]]) {
+									ofItemAtPath:[[kUserPrefPanePath stringByAppendingPathComponent:kPrefPaneName]
+                                                     stringByAppendingPathComponent:subPath] error:nil]) {
 			LOGERROR(@"InstallTool error: user PrefPane attribute change failed for subitem \"%@\".", subPath);
 			return NO;
 		}
