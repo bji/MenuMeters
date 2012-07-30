@@ -162,11 +162,34 @@ build/bin/MenuMeters\ Installer: build/obj/Installer/InstallerApp.o \
 	$(QUIET_ECHO) Linking $@ ...
 	$(VERBOSE_SHOW) gcc $(LINKFLAGS) -o "$@" $^ -framework Cocoa -framework Security
 
+DMG_DOCS := build/dmgvolroot/MenuMeters\ Read\ Me.rtf \
+            build/dmgvolroot/MenuMeters\ FAQ.rtf \
+            build/dmgvolroot/History.txt \
+            build/dmgvolroot/Website\ -\ Donate.webloc \
+            build/dmgvolroot/Artistic\ License.rtf \
+            build/dmgvolroot/GNU\ General\ Public\ License.rtf
+
+build/dmgvolroot/Artistic\ License.rtf: MenuCracker/Artistic\ License.rtf
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+build/dmgvolroot/%.rtf: Docs/%.rtf
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+build/dmgvolroot/%.txt: Docs/%.txt
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
+build/dmgvolroot/%.webloc: Docs/%.webloc
+	@mkdir -p "$(call safedir,$@)"
+	@cp -a "$^" "$@"
+
 .PHONY: dmg
 dmg: build/MenuMeters\ Installer.dmg
-build/MenuMeters\ Installer.dmg: installer
+build/MenuMeters\ Installer.dmg: installer $(DMG_DOCS)
 	$(QUIET_ECHO) Building installer image $@ ...
-	$(VERBOSE_SHOW) /usr/bin/hdiutil create -ov -srcfolder "build/MenuMeters Installer.app" -volname "MenuMeters 1.BJI" "build/MenuMeters"
+	$(VERBOSE_SHOW) /usr/bin/hdiutil create -ov -srcfolder "build/dmgvolroot" -volname "MenuMeters 1.BJI" "build/MenuMeters"
 
 .PHONY: clean
 clean:

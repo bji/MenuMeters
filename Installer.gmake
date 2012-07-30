@@ -1,6 +1,6 @@
 # -*- makefile -*-
 
-INSTROOT := build/MenuMeters\ Installer.app/Contents
+INSTROOT := build/dmgvolroot/MenuMeters\ Installer.app/Contents
 
 .PHONY: installer
 installer: \
