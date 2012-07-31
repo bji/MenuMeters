@@ -17,7 +17,7 @@ endif
 
 CFLAGS := -pipe
 
-# These compiler and flags were determined by looking at the commands
+# These commands and flags were determined by looking at the commands
 # that Xcode runs for the Xcode MenuMeters project
 
 # Build both i386 and x86_64 architecture objects

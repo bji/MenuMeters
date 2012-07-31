@@ -530,9 +530,6 @@
 	NSArray *currentLoad = [cpuInfo currentLoad:[ourPrefs cpuSortByUsage]];
 	if (!currentLoad) return;
 
-    // If in CPU sort mode, sort the current load
-    
-
 	// Add to history (at least one)
 	if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
 		if ([loadHistory count] >= [ourPrefs cpuGraphLength]) {
