@@ -152,7 +152,7 @@
 
 - (BOOL)cpuSortByUsage {
 	return [self loadBoolPref:kCPUSortByUsagePref defaultValue:kCPUSortByUsageDefault];
-} // cpuAvgAllProcs
+} // cpuSortByUsage
 
 - (BOOL)cpuPowerMate {
 	return [self loadBoolPref:kCPUPowerMatePref defaultValue:kCPUPowerMateDefault];
@@ -195,7 +195,7 @@
 
 - (void)saveCpuSortByUsage:(BOOL)sort {
 	[self saveBoolPref:kCPUSortByUsagePref value:sort];
-} // saveCpuAvgAllProcs
+} // saveCpuSortByUsage
 
 - (void)saveCpuPowerMate:(BOOL)active {
 	[self saveBoolPref:kCPUPowerMatePref value:active];

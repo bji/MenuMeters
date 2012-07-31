@@ -385,6 +385,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuPercentMode selectItemAtIndex:[ourPrefs cpuPercentDisplay]];
 	[cpuGraphWidth setIntValue:[ourPrefs cpuGraphLength]];
 	[cpuAvgProcs setState:([ourPrefs cpuAvgAllProcs] ? NSOnState : NSOffState)];
+	[cpuSortByUsage setState:([ourPrefs cpuSortByUsage] ? NSOnState : NSOffState)];
 	[cpuPowerMate setState:([ourPrefs cpuPowerMate] ? NSOnState : NSOffState)];
 	[cpuPowerMateMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
 	[cpuPowerMateMode selectItemAtIndex:[ourPrefs cpuPowerMateMode]];
