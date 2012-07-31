@@ -36,6 +36,7 @@
 - (int)cpuPercentDisplay;
 - (int)cpuGraphLength;
 - (BOOL)cpuAvgAllProcs;
+- (BOOL)cpuSortByUsage;
 - (BOOL)cpuPowerMate;
 - (int)cpuPowerMateMode;
 - (NSColor *)cpuSystemColor;
@@ -45,6 +46,7 @@
 - (void)saveCpuPercentDisplay:(int)mode;
 - (void)saveCpuGraphLength:(int)length;
 - (void)saveCpuAvgAllProcs:(BOOL)average;
+- (void)saveCpuSortByUsage:(BOOL)sort;
 - (void)saveCpuPowerMate:(BOOL)active;
 - (void)saveCpuPowerMateMode:(int)mode;
 - (void)saveCpuSystemColor:(NSColor *)color;

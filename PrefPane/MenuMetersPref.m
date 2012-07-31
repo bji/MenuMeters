@@ -360,6 +360,8 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuGraphLength:[cpuGraphWidth intValue]];
 	} else if (sender == cpuAvgProcs) {
 		[ourPrefs saveCpuAvgAllProcs:(([cpuAvgProcs state] == NSOnState) ? YES : NO)];
+    } else if (sender == cpuSortByUsage) {
+        [ourPrefs saveCpuSortByUsage:(([cpuSortByUsage state] == NSOnState) ? YES : NO)];
 	} else if (sender == cpuPowerMate) {
 		[ourPrefs saveCpuPowerMate:(([cpuPowerMate state] == NSOnState) ? YES : NO)];
 	} else if (sender == cpuPowerMateMode) {

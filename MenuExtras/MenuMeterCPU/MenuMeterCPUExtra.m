@@ -527,7 +527,7 @@
 - (void)updateCPUActivityDisplay:(NSTimer *)timer {
 
 	// Get the current load
-	NSArray *currentLoad = [cpuInfo currentLoad:YES];
+	NSArray *currentLoad = [cpuInfo currentLoad:[ourPrefs cpuSortByUsage]];
 	if (!currentLoad) return;
 
     // If in CPU sort mode, sort the current load

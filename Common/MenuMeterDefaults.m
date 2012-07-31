@@ -150,6 +150,10 @@
 	return [self loadBoolPref:kCPUAvgAllProcsPref defaultValue:kCPUAvgAllProcsDefault];
 } // cpuAvgAllProcs
 
+- (BOOL)cpuSortByUsage {
+	return [self loadBoolPref:kCPUSortByUsagePref defaultValue:kCPUSortByUsageDefault];
+} // cpuAvgAllProcs
+
 - (BOOL)cpuPowerMate {
 	return [self loadBoolPref:kCPUPowerMatePref defaultValue:kCPUPowerMateDefault];
 } // cpuPowerMate
@@ -187,6 +191,10 @@
 
 - (void)saveCpuAvgAllProcs:(BOOL)average {
 	[self saveBoolPref:kCPUAvgAllProcsPref value:average];
+} // saveCpuAvgAllProcs
+
+- (void)saveCpuSortByUsage:(BOOL)sort {
+	[self saveBoolPref:kCPUSortByUsagePref value:sort];
 } // saveCpuAvgAllProcs
 
 - (void)saveCpuPowerMate:(BOOL)active {

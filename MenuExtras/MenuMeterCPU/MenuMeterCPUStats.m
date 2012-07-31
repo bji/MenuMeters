@@ -326,7 +326,7 @@
                                              [loadUser objectAtIndex:i], @"user",
                                           nil]];
     }
-    
+
 	// Copy the new data into previous
 	for (natural_t i = 0; i < processorCount; i++) {
 		for (natural_t j = 0; j < CPU_STATE_MAX; j++) {

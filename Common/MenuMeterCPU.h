@@ -49,6 +49,7 @@
 #define kCPUPercentDisplayPref				@"CPUPercentDisplayMode"
 #define kCPUGraphLengthPref					@"CPUGraphLength"
 #define kCPUAvgAllProcsPref					@"CPUAverageMultiProcs"
+#define kCPUSortByUsagePref				    @"CPUSortByUsage"
 #define kCPUSystemColorPref					@"CPUSystemColor"
 #define kCPUUserColorPref					@"CPUUserColor"
 #define kCPUPowerMatePref					@"CPUPowerMate"
@@ -91,6 +92,9 @@ enum {
 
 // Multiproc averaging
 #define kCPUAvgAllProcsDefault				NO
+
+// Sorting by usage
+#define kCPUSortByUsageDefault				NO
 
 // PowerMate
 #define kCPUPowerMateDefault				NO
