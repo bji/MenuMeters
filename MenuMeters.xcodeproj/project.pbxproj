@@ -31,6 +31,12 @@
 		D41C27111048EBE700A8E325 /* MenuMeterWorkarounds.m in Sources */ = {isa = PBXBuildFile; fileRef = D48A79F41018B051008E3207 /* MenuMeterWorkarounds.m */; };
 		D41C27771048FE9C00A8E325 /* MenuCracker.menu in Resources */ = {isa = PBXBuildFile; fileRef = D41C27741048FE9B00A8E325 /* MenuCracker.menu */; };
 		D41C27C910490E3300A8E325 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D478F451101A8AE100C79173 /* IOKit.framework */; };
+		D45CFE77092451AE0015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
+		D45CFE78092451CC0015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
+		D45CFE79092451CF0015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
+		D45CFE7B092451D80015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
+		D45CFE7C092451DC0015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
+		D45CFE7D092451DF0015131F /* MenuMeters.pch in Headers */ = {isa = PBXBuildFile; fileRef = D4995ABC09244C7700F8DB73 /* MenuMeters.pch */; };
 		D46E02B9104BA13500BA590F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D403AD3B0E04E99C00348443 /* Foundation.framework */; };
 		D478F452101A8AE100C79173 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D478F451101A8AE100C79173 /* IOKit.framework */; };
 		D478F455101A8AF100C79173 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D478F451101A8AE100C79173 /* IOKit.framework */; };
@@ -492,6 +498,7 @@
 		D40DB4A303D25F2100A87BC9 = {
 			isa = PBXGroup;
 			children = (
+				D4995ABC09244C7700F8DB73 /* MenuMeters.pch */,
 				D4510D7304F2F06100A87BC9 /* Docs */,
 				D40DB4B303D25F9E00A87BC9 /* Common */,
 				D40DB4A903D25F4C00A87BC9 /* MenuExtras */,
@@ -823,6 +830,7 @@
 				D4ECB2D505FE700600954E26 /* MenuMeterNetPPP.h in Headers */,
 				D4ECB2D605FE700600954E26 /* MenuMeterDefaults.h in Headers */,
 				D4ECB2D705FE700600954E26 /* MenuMeters.h in Headers */,
+				D45CFE77092451AE0015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +844,7 @@
 				D4ECB2F405FE707A00954E26 /* MenuMeterMemExtra.h in Headers */,
 				D4ECB2F505FE707A00954E26 /* MenuMeterMemStats.h in Headers */,
 				D4ECB2F605FE707A00954E26 /* MenuMeters.h in Headers */,
+				D45CFE78092451CC0015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -850,6 +859,7 @@
 				D4ECB34B05FE712E00954E26 /* MenuMeterDiskSpace.h in Headers */,
 				D4ECB34C05FE712E00954E26 /* MenuMeterDefaults.h in Headers */,
 				D4ECB34D05FE712E00954E26 /* MenuMeters.h in Headers */,
+				D45CFE79092451CF0015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,6 +875,7 @@
 				D4ECB39C05FE72E100954E26 /* MenuMeterPowerMate.h in Headers */,
 				D4ECB39D05FE72E100954E26 /* MenuMeters.h in Headers */,
 				D4ECB39E05FE72E100954E26 /* MenuMetersPref.h in Headers */,
+				D45CFE7B092451D80015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +884,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4ECB3C005FE735400954E26 /* Installer.h in Headers */,
+				D45CFE7D092451DF0015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +894,7 @@
 			files = (
 				D4ECB3CF05FE736D00954E26 /* InstallerApp.h in Headers */,
 				D4ECB3D005FE736D00954E26 /* Installer.h in Headers */,
+				D45CFE7C092451DC0015131F /* MenuMeters.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,11 +1530,11 @@
 		D4AFB328087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = InstallTool;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1532,10 +1545,9 @@
 		D4AFB32B087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Common/Resources/DefaultsBundleInfo.plist;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterDefaults;
 				SDKROOT = macosx10.7;
 				"SDKROOT[arch=x86_64]" = macosx10.7;
@@ -1550,17 +1562,13 @@
 		D4AFB32E087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterCPU/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterCPU;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1574,12 +1582,10 @@
 			buildSettings = {
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterDisk/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterDisk;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1591,15 +1597,12 @@
 		D4AFB334087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterMem/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterMem;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1613,9 +1616,10 @@
 			buildSettings = {
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterNet/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterNet;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1627,17 +1631,14 @@
 		D4AFB33A087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_ENABLE_OBJC_GC = unsupported;
 				"GCC_ENABLE_OBJC_GC[sdk=macosx10.5][arch=x86_64]" = supported;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = PrefPane/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeters;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
-				VALID_ARCHS = x86_64;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1649,12 +1650,12 @@
 		D4AFB33D087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Installer/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = "MenuMeters Installer";
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1666,15 +1667,10 @@
 		D4AFB340087726B20023B640 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				IMAGE_DSSTORE = Package/ImageDS;
 				KILL_ITEM_1 = "Restart SystemUIServer.app";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.5;
 				PACKAGE_BUILD_ITEM_1 = "MenuMeters Installer.app";
 				PACKAGE_SOURCE_ITEM_1 = "Docs/MenuMeters Read Me.rtf";
 				PACKAGE_SOURCE_ITEM_2 = Docs/History.txt;
@@ -1684,8 +1680,13 @@
 				PRODUCT_NAME = MenuMeters;
 				PRODUCT_VERSION = 1.6;
 				RSRCFORK_SOURCE_ITEM_1 = "Docs/Website - Donate.webloc";
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				STRIP_NIBS = 0;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wshorten-64-to-32",
+				);
 			};
 			name = Release;
 		};
@@ -1755,15 +1756,10 @@
 		D4CD20440D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				IMAGE_DSSTORE = Package/ImageDS;
 				KILL_ITEM_1 = "Restart SystemUIServer.app";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.5;
 				PACKAGE_BUILD_ITEM_1 = "MenuMeters Installer.app";
 				PACKAGE_SOURCE_ITEM_1 = "Docs/MenuMeters Read Me.rtf";
 				PACKAGE_SOURCE_ITEM_2 = Docs/History.txt;
@@ -1773,21 +1769,25 @@
 				PRODUCT_NAME = MenuMeters;
 				PRODUCT_VERSION = 1.3.1d1;
 				RSRCFORK_SOURCE_ITEM_1 = "Docs/Website - Donate.webloc";
-				SDKROOT = macosx10.5;
-				"SDKROOT[sdk=macosx10.7]" = macosx10.5;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				STRIP_NIBS = 0;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wshorten-64-to-32",
+				);
 			};
 			name = Debug;
 		};
 		D4CD20450D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Installer/Resources/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = "MenuMeters Installer";
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1799,11 +1799,11 @@
 		D4CD20460D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = InstallTool;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1814,17 +1814,14 @@
 		D4CD20470D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_ENABLE_OBJC_GC = unsupported;
 				"GCC_ENABLE_OBJC_GC[sdk=macosx10.5][arch=x86_64]" = supported;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = PrefPane/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeters;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
-				VALID_ARCHS = x86_64;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1836,17 +1833,13 @@
 		D4CD20480D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterCPU/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterCPU;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1860,12 +1853,10 @@
 			buildSettings = {
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterDisk/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterDisk;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1877,16 +1868,12 @@
 		D4CD204A0D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				"DYLIB_COMPATIBILITY_VERSION[sdk=*]" = "";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterMem/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.4][arch=ppc]" = 10.7;
-				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx10.5][arch=*]" = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterMem;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1900,9 +1887,10 @@
 			buildSettings = {
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = MenuExtras/MenuMeterNet/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterNet;
-				SDKROOT = macosx;
-				"SDKROOT[arch=x86_64]" = macosx;
+				SDKROOT = macosx10.7;
+				"SDKROOT[arch=x86_64]" = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wshorten-64-to-32",
@@ -1914,10 +1902,9 @@
 		D4CD204C0D88E34100481A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = Common/Resources/DefaultsBundleInfo.plist;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = MenuMeterDefaults;
 				SDKROOT = macosx10.7;
 				"SDKROOT[arch=x86_64]" = macosx10.7;

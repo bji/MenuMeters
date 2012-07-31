@@ -777,7 +777,8 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		// context
 		nil,
 		// msg
-		[[NSBundle bundleForClass:[self class]]
+		@"%@",
+        [[NSBundle bundleForClass:[self class]]
 			localizedStringForKey:@"For instructions on enabling third-party menu extras please see the documentation."
 							value:nil
 							table:nil]);
