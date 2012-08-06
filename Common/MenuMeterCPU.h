@@ -32,6 +32,10 @@
 #define kCPUThermometerDisplayWidth			10
 #define kCPUDisplayMultiProcGapWidth		5
 
+// Maximum number of CPU thermometers to display in a single column when
+// drawing horizontal thermometers
+#define kCPUMaxHorizontalThermometersPerColumn 4
+
 // Menu item indexes
 #define kCPUUptimeInfoMenuIndex				3
 #define kCPUTaskInfoMenuIndex				5

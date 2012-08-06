@@ -36,6 +36,7 @@
 - (void)renderSinglePercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
 - (void)renderSplitPercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
 - (void)renderThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset;
+- (void)renderHorizontalThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atX:(float)x andY:(float)y withWidth:(float)width andHeight:(float)height;
 
 // Timer callbacks
 - (void)updateCPUActivityDisplay:(NSTimer *)timer;
@@ -269,35 +270,69 @@
 	// Don't render without data
 	if (![loadHistory count]) return nil;
 
-	// Loop by processor
-	float renderOffset = 0;
-	for (uint32_t cpuNum = 0; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-
-		// Render graph if needed
-		if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
-			[self renderHistoryGraphIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			// Adjust render offset
-			renderOffset += [ourPrefs cpuGraphLength];
-		}
-		// Render percent if needed
-		if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
-			if ([ourPrefs cpuPercentDisplay] == kCPUPercentDisplaySplit) {
-				[self renderSplitPercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			} else {
-				[self renderSinglePercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			}
-			renderOffset += percentWidth;
-		}
-		if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
-			[self renderThermometerIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
-			renderOffset += kCPUThermometerDisplayWidth;
-		}
-		// At end of each proc adjust spacing
-		renderOffset += kCPUDisplayMultiProcGapWidth;
-
-		// If we're averaging all we're done on first iteration
-		if ([ourPrefs cpuAvgAllProcs]) break;
-	}
+    // Horizontal CPU thermometer is handled differently because it has to
+    // manage rows and columns in a very different way from normal horizontal
+    // layout
+    if (0) {
+        // Calculate the minimum number of columns that will be needed
+        uint32_t cpuCount = [cpuInfo numberOfCPUs];
+        uint32_t columnCount = ((cpuCount - 1) / kCPUMaxHorizontalThermometersPerColumn) + 1;
+        // Now calculate the number of rows that will be needed, by evenly
+        // distributing thermometers to each column
+        uint32_t rowCount = ((cpuCount - 1) / columnCount) + 1;
+        // Calculate a column width
+        float columnWidth = (menuWidth - 1.0f) / columnCount;
+        // Image height
+        float imageHeight = (float) ([currentImage size].height);
+        // Calculate a thermometer height
+        float thermometerHeight = ((imageHeight - 2) / rowCount);
+        for (uint32_t cpuNum = 0; cpuNum < cpuCount; cpuNum++) {
+            float xOffset = ((cpuNum / rowCount) * columnWidth) + 1.0f;
+            float yOffset = (imageHeight -
+                             (((cpuNum % rowCount) + 1) * thermometerHeight)) - 1.0f;
+            if ((cpuNum / rowCount) == 0) {
+                // Render the leftmost cap
+                NSBezierPath *leftCapPath = [NSBezierPath bezierPathWithRect:NSMakeRect(xOffset, yOffset, 1.0f, thermometerHeight - 1.0f)];
+                [currentImage lockFocus];
+                [fgMenuThemeColor set];
+                [leftCapPath fill];
+                [[NSColor blackColor] set];
+                [currentImage unlockFocus];
+            }
+            [self renderHorizontalThermometerIntoImage:currentImage forProcessor:cpuNum atX:xOffset andY:yOffset withWidth:columnWidth andHeight:thermometerHeight];
+        }
+    }
+    else {
+        // Loop by processor
+        float renderOffset = 0;
+        for (uint32_t cpuNum = 0; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
+            
+            // Render graph if needed
+            if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
+                [self renderHistoryGraphIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+                // Adjust render offset
+                renderOffset += [ourPrefs cpuGraphLength];
+            }
+            // Render percent if needed
+            if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
+                if ([ourPrefs cpuPercentDisplay] == kCPUPercentDisplaySplit) {
+                    [self renderSplitPercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+                } else {
+                    [self renderSinglePercentIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+                }
+                renderOffset += percentWidth;
+            }
+            if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
+                [self renderThermometerIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
+                renderOffset += kCPUThermometerDisplayWidth;
+            }
+            // At end of each proc adjust spacing
+            renderOffset += kCPUDisplayMultiProcGapWidth;
+            
+            // If we're averaging all we're done on first iteration
+            if ([ourPrefs cpuAvgAllProcs]) break;
+        }
+    }
 
 	// Send it back for the view to render
 	return currentImage;
@@ -474,6 +509,7 @@
 
 } // renderSplitPercentIntoImage:forProcessor:atOffset:
 
+
 - (void)renderThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset {
 
 	// Current load (if available)
@@ -517,6 +553,48 @@
 	[image unlockFocus];
 
 } // renderThermometerIntoImage:forProcessor:atOffset:
+
+- (void)renderHorizontalThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atX:(float)x andY:(float)y withWidth:(float)width andHeight:(float)height {
+	// Current load (if available)
+	NSArray *currentLoad = [loadHistory lastObject];
+	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+
+	float system = [[[currentLoad objectAtIndex:processor] objectForKey:@"system"] floatValue];
+	float user = [[[currentLoad objectAtIndex:processor] objectForKey:@"user"] floatValue];
+	if ([ourPrefs cpuAvgAllProcs]) {
+		for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
+			system += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
+			user += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
+		}
+		system /= [cpuInfo numberOfCPUs];
+		user /= [cpuInfo numberOfCPUs];
+	}
+	if (system > 1) system = 1;
+	if (system < 0) system = 0;
+	if (user > 1) user = 1;
+	if (user < 0) user = 0;
+
+	// Paths
+    NSBezierPath *rightCapPath = [NSBezierPath bezierPathWithRect:NSMakeRect((x + width) - 2.0f, y, 1.0f, height - 1.0f)];
+
+	NSBezierPath *userPath = [NSBezierPath bezierPathWithRect:NSMakeRect(x + 1.0f, y, (width - 2.0f) * ((user + system) > 1 ? 1 : (user + system)), height - 1.0f)];
+
+	NSBezierPath *systemPath = [NSBezierPath bezierPathWithRect:NSMakeRect(x + 1.0f, y, (width - 2.0f) * system, height - 1.0f)];
+
+	// Draw
+    [image lockFocus];
+	[userColor set];
+	[userPath fill];
+	[systemColor set];
+	[systemPath fill];
+    [fgMenuThemeColor set];
+    [rightCapPath fill];
+
+	// Reset
+	[[NSColor blackColor] set];
+	[image unlockFocus];
+
+} // renderHorizontalThermometerIntoImage:forProcessor:atX:andY:withWidth:andHeight:
 
 ///////////////////////////////////////////////////////////////
 //
