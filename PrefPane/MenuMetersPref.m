@@ -358,6 +358,8 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuPercentDisplay:(int)[cpuPercentMode indexOfSelectedItem]];
 	} else if (sender == cpuGraphWidth) {
 		[ourPrefs saveCpuGraphLength:[cpuGraphWidth intValue]];
+    } else if (sender == cpuColumns) {
+        [ourPrefs saveCpuColumns:[cpuColumns intValue]];
 	} else if (sender == cpuAvgProcs) {
 		[ourPrefs saveCpuAvgAllProcs:(([cpuAvgProcs state] == NSOnState) ? YES : NO)];
     } else if (sender == cpuSortByUsage) {
@@ -384,6 +386,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuPercentMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
 	[cpuPercentMode selectItemAtIndex:[ourPrefs cpuPercentDisplay]];
 	[cpuGraphWidth setIntValue:[ourPrefs cpuGraphLength]];
+    [cpuColumns setIntValue:[ourPrefs cpuColumns]];
 	[cpuAvgProcs setState:([ourPrefs cpuAvgAllProcs] ? NSOnState : NSOffState)];
 	[cpuSortByUsage setState:([ourPrefs cpuSortByUsage] ? NSOnState : NSOffState)];
 	[cpuPowerMate setState:([ourPrefs cpuPowerMate] ? NSOnState : NSOffState)];

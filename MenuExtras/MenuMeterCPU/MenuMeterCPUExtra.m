@@ -273,10 +273,16 @@
     // Horizontal CPU thermometer is handled differently because it has to
     // manage rows and columns in a very different way from normal horizontal
     // layout
-    if (0) {
+    if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
         // Calculate the minimum number of columns that will be needed
-        uint32_t cpuCount = [cpuInfo numberOfCPUs];
-        uint32_t columnCount = ((cpuCount - 1) / kCPUMaxHorizontalThermometersPerColumn) + 1;
+        // uint32_t cpuCount = [cpuInfo numberOfCPUs];
+        uint32_t cpuCount = 5;
+        int columns = [ourPrefs cpuColumns];
+        if (columns == 0) {
+            columns = 1;
+        }
+        // uint32_t columnCount = ((cpuCount - 1) / [ourPrefs cpuColumns]) + 1;
+        uint32_t columnCount = ((cpuCount - 1) / columns) + 1;
         // Now calculate the number of rows that will be needed, by evenly
         // distributing thermometers to each column
         uint32_t rowCount = ((cpuCount - 1) / columnCount) + 1;

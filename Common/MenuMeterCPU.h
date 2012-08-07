@@ -32,10 +32,6 @@
 #define kCPUThermometerDisplayWidth			10
 #define kCPUDisplayMultiProcGapWidth		5
 
-// Maximum number of CPU thermometers to display in a single column when
-// drawing horizontal thermometers
-#define kCPUMaxHorizontalThermometersPerColumn 4
-
 // Menu item indexes
 #define kCPUUptimeInfoMenuIndex				3
 #define kCPUTaskInfoMenuIndex				5
@@ -52,6 +48,7 @@
 #define kCPUDisplayModePref					@"CPUDisplayMode"
 #define kCPUPercentDisplayPref				@"CPUPercentDisplayMode"
 #define kCPUGraphLengthPref					@"CPUGraphLength"
+#define kCPUColumnsPref                     @"CPUColumns"
 #define kCPUAvgAllProcsPref					@"CPUAverageMultiProcs"
 #define kCPUSortByUsagePref				    @"CPUSortByUsage"
 #define kCPUSystemColorPref					@"CPUSystemColor"
@@ -63,7 +60,8 @@
 enum {
 	kCPUDisplayPercent						= 1,
 	kCPUDisplayGraph						= 2,
-	kCPUDisplayThermometer					= 4
+	kCPUDisplayThermometer					= 4,
+    kCPUDisplayHorizontalThermometer        = 5
 };
 #define kCPUDisplayDefault					kCPUDisplayPercent
 
@@ -93,6 +91,11 @@ enum {
 #define kCPUGraphWidthMin					11
 #define kCPUGraphWidthMax					88
 #define kCPUGraphWidthDefault				33
+
+// Thermometer display
+#define kCPUColumnsMin                      1
+#define kCPUColumnsMax                      8
+#define kCPUColumnsDefault                  1
 
 // Multiproc averaging
 #define kCPUAvgAllProcsDefault				NO

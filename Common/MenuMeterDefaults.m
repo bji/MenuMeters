@@ -146,6 +146,13 @@
 				defaultValue:kCPUGraphWidthDefault];
 } // cpuGraphLength
 
+- (int)cpuColumns {
+    return [self loadIntPref:kCPUColumnsPref
+                    lowBound:kCPUColumnsMin
+                    highBound:kCPUColumnsMax
+                defaultValue:kCPUColumnsDefault];
+} // cpuColumns
+
 - (BOOL)cpuAvgAllProcs {
 	return [self loadBoolPref:kCPUAvgAllProcsPref defaultValue:kCPUAvgAllProcsDefault];
 } // cpuAvgAllProcs
@@ -188,6 +195,10 @@
 - (void)saveCpuGraphLength:(int)length {
 	[self saveIntPref:kCPUGraphLengthPref value:length];
 } // saveCpuGraphLength
+
+- (void)saveCpuColumns:(int)columns {
+    [self saveIntPref:kCPUColumnsPref value:columns];
+} // saveCpuColumns
 
 - (void)saveCpuAvgAllProcs:(BOOL)average {
 	[self saveBoolPref:kCPUAvgAllProcsPref value:average];
