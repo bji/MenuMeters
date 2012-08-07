@@ -275,14 +275,9 @@
     // layout
     if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
         // Calculate the minimum number of columns that will be needed
-        // uint32_t cpuCount = [cpuInfo numberOfCPUs];
-        uint32_t cpuCount = 5;
-        int columns = [ourPrefs cpuColumns];
-        if (columns == 0) {
-            columns = 1;
-        }
-        // uint32_t columnCount = ((cpuCount - 1) / [ourPrefs cpuColumns]) + 1;
-        uint32_t columnCount = ((cpuCount - 1) / columns) + 1;
+        uint32_t cpuCount = [cpuInfo numberOfCPUs];
+        uint32_t columnCount = 
+            ((cpuCount - 1) / [ourPrefs cpuHorizontalRows]) + 1;
         // Now calculate the number of rows that will be needed, by evenly
         // distributing thermometers to each column
         uint32_t rowCount = ((cpuCount - 1) / columnCount) + 1;
@@ -834,7 +829,8 @@
 	if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
 		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * [ourPrefs cpuGraphLength]);
 	}
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
+	if ([ourPrefs cpuDisplayMode] & (kCPUDisplayThermometer |
+                                     kCPUDisplayHorizontalThermometer)) {
 		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * kCPUThermometerDisplayWidth);
 	}
 	if (![ourPrefs cpuAvgAllProcs] && ([cpuInfo numberOfCPUs] > 1)) {

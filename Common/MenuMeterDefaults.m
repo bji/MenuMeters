@@ -127,7 +127,7 @@
 
 - (int)cpuDisplayMode {
 	return [self loadBitFlagPref:kCPUDisplayModePref
-					  validFlags:(kCPUDisplayPercent | kCPUDisplayGraph | kCPUDisplayThermometer)
+					  validFlags:(kCPUDisplayPercent | kCPUDisplayGraph | kCPUDisplayThermometer | kCPUDisplayHorizontalThermometer)
 					   zeroValid:NO
 					defaultValue:kCPUDisplayDefault];
 } // cpuDisplayMode
@@ -146,12 +146,12 @@
 				defaultValue:kCPUGraphWidthDefault];
 } // cpuGraphLength
 
-- (int)cpuColumns {
-    return [self loadIntPref:kCPUColumnsPref
-                    lowBound:kCPUColumnsMin
-                    highBound:kCPUColumnsMax
-                defaultValue:kCPUColumnsDefault];
-} // cpuColumns
+- (int)cpuHorizontalRows {
+    return [self loadIntPref:kCPUHorizontalRowsPref
+                    lowBound:kCPUHorizontalRowsMin
+                    highBound:kCPUHorizontalRowsMax
+                defaultValue:kCPUHorizontalRowsDefault];
+} // cpuHorizontalRows
 
 - (BOOL)cpuAvgAllProcs {
 	return [self loadBoolPref:kCPUAvgAllProcsPref defaultValue:kCPUAvgAllProcsDefault];
@@ -196,9 +196,9 @@
 	[self saveIntPref:kCPUGraphLengthPref value:length];
 } // saveCpuGraphLength
 
-- (void)saveCpuColumns:(int)columns {
-    [self saveIntPref:kCPUColumnsPref value:columns];
-} // saveCpuColumns
+- (void)saveCpuHorizontalRows:(int)rows {
+    [self saveIntPref:kCPUHorizontalRowsPref value:rows];
+} // saveCpuHorizontalRows
 
 - (void)saveCpuAvgAllProcs:(BOOL)average {
 	[self saveBoolPref:kCPUAvgAllProcsPref value:average];

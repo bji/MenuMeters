@@ -54,8 +54,9 @@
 	IBOutlet NSPopUpButton			*cpuPercentMode;
 	IBOutlet NSTextField			*cpuPercentModeLabel;
 	IBOutlet NSSlider				*cpuGraphWidth;
-	IBOutlet NSSlider				*cpuColumns;
 	IBOutlet NSTextField			*cpuGraphWidthLabel;
+	IBOutlet NSSlider				*cpuHorizontalRows;
+	IBOutlet NSTextField			*cpuHorizontalRowsLabel;
 	IBOutlet NSButton				*cpuAvgProcs;
     IBOutlet NSButton               *cpuSortByUsage;
 	IBOutlet NSButton				*cpuPowerMate;

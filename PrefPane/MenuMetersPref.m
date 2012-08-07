@@ -358,8 +358,8 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuPercentDisplay:(int)[cpuPercentMode indexOfSelectedItem]];
 	} else if (sender == cpuGraphWidth) {
 		[ourPrefs saveCpuGraphLength:[cpuGraphWidth intValue]];
-    } else if (sender == cpuColumns) {
-        [ourPrefs saveCpuColumns:[cpuColumns intValue]];
+    } else if (sender == cpuHorizontalRows) {
+        [ourPrefs saveCpuHorizontalRows:[cpuHorizontalRows intValue]];
 	} else if (sender == cpuAvgProcs) {
 		[ourPrefs saveCpuAvgAllProcs:(([cpuAvgProcs state] == NSOnState) ? YES : NO)];
     } else if (sender == cpuSortByUsage) {
@@ -386,7 +386,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuPercentMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
 	[cpuPercentMode selectItemAtIndex:[ourPrefs cpuPercentDisplay]];
 	[cpuGraphWidth setIntValue:[ourPrefs cpuGraphLength]];
-    [cpuColumns setIntValue:[ourPrefs cpuColumns]];
+    [cpuHorizontalRows setIntValue:[ourPrefs cpuHorizontalRows]];
 	[cpuAvgProcs setState:([ourPrefs cpuAvgAllProcs] ? NSOnState : NSOffState)];
 	[cpuSortByUsage setState:([ourPrefs cpuSortByUsage] ? NSOnState : NSOffState)];
 	[cpuPowerMate setState:([ourPrefs cpuPowerMate] ? NSOnState : NSOffState)];
@@ -411,7 +411,15 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[cpuGraphWidth setEnabled:NO];
 		[cpuGraphWidthLabel setTextColor:[NSColor lightGrayColor]];
 	}
-	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer)) ||
+    if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayHorizontalThermometer) {
+		[cpuHorizontalRows setEnabled:YES];
+		[cpuHorizontalRowsLabel setTextColor:[NSColor blackColor]];
+    }
+    else {
+		[cpuHorizontalRows setEnabled:NO];
+		[cpuHorizontalRowsLabel setTextColor:[NSColor lightGrayColor]];
+    }
+	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer | kCPUDisplayHorizontalThermometer)) ||
 		((([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) &&
 			([cpuPercentMode indexOfSelectedItem] == kCPUPercentDisplaySplit))) {
 		[cpuUserColor setEnabled:YES];

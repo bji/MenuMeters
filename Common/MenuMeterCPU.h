@@ -48,7 +48,7 @@
 #define kCPUDisplayModePref					@"CPUDisplayMode"
 #define kCPUPercentDisplayPref				@"CPUPercentDisplayMode"
 #define kCPUGraphLengthPref					@"CPUGraphLength"
-#define kCPUColumnsPref                     @"CPUColumns"
+#define kCPUHorizontalRowsPref              @"CPUHorizontalRows"
 #define kCPUAvgAllProcsPref					@"CPUAverageMultiProcs"
 #define kCPUSortByUsagePref				    @"CPUSortByUsage"
 #define kCPUSystemColorPref					@"CPUSystemColor"
@@ -61,7 +61,7 @@ enum {
 	kCPUDisplayPercent						= 1,
 	kCPUDisplayGraph						= 2,
 	kCPUDisplayThermometer					= 4,
-    kCPUDisplayHorizontalThermometer        = 5
+    kCPUDisplayHorizontalThermometer        = 8
 };
 #define kCPUDisplayDefault					kCPUDisplayPercent
 
@@ -93,9 +93,9 @@ enum {
 #define kCPUGraphWidthDefault				33
 
 // Thermometer display
-#define kCPUColumnsMin                      1
-#define kCPUColumnsMax                      8
-#define kCPUColumnsDefault                  1
+#define kCPUHorizontalRowsMin               1
+#define kCPUHorizontalRowsMax               8
+#define kCPUHorizontalRowsDefault           2
 
 // Multiproc averaging
 #define kCPUAvgAllProcsDefault				NO
