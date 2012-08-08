@@ -397,12 +397,20 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuIntervalDisplay takeDoubleValueFrom:cpuInterval];
 
 	// Disable controls as needed
+    if ([cpuSortByUsage state] == NSOnState) {
+        [cpuAvgProcs setEnabled:NO];
+        [cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
+    }
+    else {
+        [cpuAvgProcs setEnabled:YES];
+        [cpuPercentModeLabel setTextColor:[NSColor blackColor]];
+    }
 	if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) {
 		[cpuPercentMode setEnabled:YES];
 		[cpuPercentModeLabel setTextColor:[NSColor blackColor]];
 	} else {
 		[cpuPercentMode setEnabled:NO];
-		[cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
+        [cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
 	}
 	if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayGraph) {
 		[cpuGraphWidth setEnabled:YES];

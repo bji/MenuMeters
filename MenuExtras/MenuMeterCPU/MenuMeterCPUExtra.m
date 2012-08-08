@@ -276,11 +276,9 @@
     if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
         // Calculate the minimum number of columns that will be needed
         uint32_t cpuCount = [cpuInfo numberOfCPUs];
+        uint32_t rowCount = [ourPrefs cpuHorizontalRows];
         uint32_t columnCount = 
             ((cpuCount - 1) / [ourPrefs cpuHorizontalRows]) + 1;
-        // Now calculate the number of rows that will be needed, by evenly
-        // distributing thermometers to each column
-        uint32_t rowCount = ((cpuCount - 1) / columnCount) + 1;
         // Calculate a column width
         float columnWidth = (menuWidth - 1.0f) / columnCount;
         // Image height
