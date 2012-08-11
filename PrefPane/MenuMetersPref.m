@@ -367,6 +367,7 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuAvgAllProcs:avg];
         if (avg) {
             [ourPrefs saveCpuAvgLowerHalfProcs:NO];
+            [ourPrefs saveCpuSortByUsage:NO];
         }
 	} else if (sender == cpuAvgLowerHalfProcs) {
         bool avg = ([cpuAvgLowerHalfProcs state] == NSOnState) ? YES : NO;
@@ -379,6 +380,9 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
         [ourPrefs saveCpuSortByUsage:sort];
         if (sort) {
             [ourPrefs saveCpuAvgAllProcs:NO];
+        }
+        else {
+            [ourPrefs saveCpuAvgLowerHalfProcs:NO];
         }
 	} else if (sender == cpuPowerMate) {
 		[ourPrefs saveCpuPowerMate:(([cpuPowerMate state] == NSOnState) ? YES : NO)];
@@ -418,10 +422,18 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
     if ([cpuSortByUsage state] == NSOnState) {
         [cpuAvgProcs setEnabled:NO];
         [cpuPercentModeLabel setTextColor:[NSColor lightGrayColor]];
+        [cpuAvgLowerHalfProcs setEnabled:YES];
     }
     else {
         [cpuAvgProcs setEnabled:YES];
         [cpuPercentModeLabel setTextColor:[NSColor blackColor]];
+        [cpuAvgLowerHalfProcs setEnabled:NO];
+    }
+    if ([cpuAvgProcs state] == NSOnState) {
+        [cpuSortByUsage setEnabled:NO];
+    }
+    else {
+        [cpuSortByUsage setEnabled:YES];
     }
 	if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) {
 		[cpuPercentMode setEnabled:YES];
@@ -449,7 +461,6 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[cpuHorizontalRowsLabel setTextColor:[NSColor lightGrayColor]];
 		[cpuMenuWidth setEnabled:NO];
 		[cpuMenuWidthLabel setTextColor:[NSColor lightGrayColor]];
-        [cpuAvgProcs setEnabled:YES];
     }
 	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer | kCPUDisplayHorizontalThermometer)) ||
 		((([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) &&
