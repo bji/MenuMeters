@@ -36,7 +36,9 @@
 - (int)cpuPercentDisplay;
 - (int)cpuGraphLength;
 - (int)cpuHorizontalRows;
+- (int)cpuMenuWidth;
 - (BOOL)cpuAvgAllProcs;
+- (BOOL)cpuAvgLowerHalfProcs;
 - (BOOL)cpuSortByUsage;
 - (BOOL)cpuPowerMate;
 - (int)cpuPowerMateMode;
@@ -47,7 +49,9 @@
 - (void)saveCpuPercentDisplay:(int)mode;
 - (void)saveCpuGraphLength:(int)length;
 - (void)saveCpuHorizontalRows:(int)rows;
+- (void)saveCpuMenuWidth:(int)width;
 - (void)saveCpuAvgAllProcs:(BOOL)average;
+- (void)saveCpuAvgLowerHalfProcs:(BOOL)average;
 - (void)saveCpuSortByUsage:(BOOL)sort;
 - (void)saveCpuPowerMate:(BOOL)active;
 - (void)saveCpuPowerMateMode:(int)mode;

@@ -360,10 +360,26 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 		[ourPrefs saveCpuGraphLength:[cpuGraphWidth intValue]];
     } else if (sender == cpuHorizontalRows) {
         [ourPrefs saveCpuHorizontalRows:[cpuHorizontalRows intValue]];
+    } else if (sender == cpuMenuWidth) {
+        [ourPrefs saveCpuMenuWidth:[cpuMenuWidth intValue]];
 	} else if (sender == cpuAvgProcs) {
-		[ourPrefs saveCpuAvgAllProcs:(([cpuAvgProcs state] == NSOnState) ? YES : NO)];
+        bool avg = ([cpuAvgProcs state] == NSOnState) ? YES : NO;
+		[ourPrefs saveCpuAvgAllProcs:avg];
+        if (avg) {
+            [ourPrefs saveCpuAvgLowerHalfProcs:NO];
+        }
+	} else if (sender == cpuAvgLowerHalfProcs) {
+        bool avg = ([cpuAvgLowerHalfProcs state] == NSOnState) ? YES : NO;
+		[ourPrefs saveCpuAvgLowerHalfProcs:avg];
+        if (avg) {
+            [ourPrefs saveCpuAvgAllProcs:NO];
+        }
     } else if (sender == cpuSortByUsage) {
-        [ourPrefs saveCpuSortByUsage:(([cpuSortByUsage state] == NSOnState) ? YES : NO)];
+        BOOL sort = ([cpuSortByUsage state] == NSOnState) ? YES : NO;
+        [ourPrefs saveCpuSortByUsage:sort];
+        if (sort) {
+            [ourPrefs saveCpuAvgAllProcs:NO];
+        }
 	} else if (sender == cpuPowerMate) {
 		[ourPrefs saveCpuPowerMate:(([cpuPowerMate state] == NSOnState) ? YES : NO)];
 	} else if (sender == cpuPowerMateMode) {
@@ -387,7 +403,9 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
 	[cpuPercentMode selectItemAtIndex:[ourPrefs cpuPercentDisplay]];
 	[cpuGraphWidth setIntValue:[ourPrefs cpuGraphLength]];
     [cpuHorizontalRows setIntValue:[ourPrefs cpuHorizontalRows]];
+    [cpuMenuWidth setIntValue:[ourPrefs cpuMenuWidth]];
 	[cpuAvgProcs setState:([ourPrefs cpuAvgAllProcs] ? NSOnState : NSOffState)];
+	[cpuAvgLowerHalfProcs setState:([ourPrefs cpuAvgLowerHalfProcs] ? NSOnState : NSOffState)];
 	[cpuSortByUsage setState:([ourPrefs cpuSortByUsage] ? NSOnState : NSOffState)];
 	[cpuPowerMate setState:([ourPrefs cpuPowerMate] ? NSOnState : NSOffState)];
 	[cpuPowerMateMode selectItemAtIndex:-1]; // Work around multiselects. AppKit problem?
@@ -422,10 +440,16 @@ static void scChangeCallback(SCDynamicStoreRef store, CFArrayRef changedKeys, vo
     if (([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayHorizontalThermometer) {
 		[cpuHorizontalRows setEnabled:YES];
 		[cpuHorizontalRowsLabel setTextColor:[NSColor blackColor]];
+        [cpuMenuWidth setEnabled:YES];
+        [cpuMenuWidthLabel setTextColor:[NSColor blackColor]];
+        [cpuAvgProcs setEnabled:NO];
     }
     else {
 		[cpuHorizontalRows setEnabled:NO];
 		[cpuHorizontalRowsLabel setTextColor:[NSColor lightGrayColor]];
+		[cpuMenuWidth setEnabled:NO];
+		[cpuMenuWidthLabel setTextColor:[NSColor lightGrayColor]];
+        [cpuAvgProcs setEnabled:YES];
     }
 	if ((([cpuDisplayMode indexOfSelectedItem] + 1) & (kCPUDisplayGraph | kCPUDisplayThermometer | kCPUDisplayHorizontalThermometer)) ||
 		((([cpuDisplayMode indexOfSelectedItem] + 1) & kCPUDisplayPercent) &&

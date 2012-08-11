@@ -49,7 +49,9 @@
 #define kCPUPercentDisplayPref				@"CPUPercentDisplayMode"
 #define kCPUGraphLengthPref					@"CPUGraphLength"
 #define kCPUHorizontalRowsPref              @"CPUHorizontalRows"
+#define kCPUMenuWidthPref                   @"CPUMenuWidth"
 #define kCPUAvgAllProcsPref					@"CPUAverageMultiProcs"
+#define kCPUAvgLowerHalfProcsPref			@"CPUAverageLowerHalfProcs"
 #define kCPUSortByUsagePref				    @"CPUSortByUsage"
 #define kCPUSystemColorPref					@"CPUSystemColor"
 #define kCPUUserColorPref					@"CPUUserColor"
@@ -97,8 +99,16 @@ enum {
 #define kCPUHorizontalRowsMax               8
 #define kCPUHorizontalRowsDefault           2
 
+// Menu width
+#define kCPUMenuWidthMin                    60
+#define kCPUMenuWidthMax                    400
+#define kCPUMenuWidthDefault                120
+
 // Multiproc averaging
 #define kCPUAvgAllProcsDefault				NO
+
+// Least-utilized half of procs averaging
+#define kCPUAvgLowerHalfProcsDefault		NO
 
 // Sorting by usage
 #define kCPUSortByUsageDefault				NO

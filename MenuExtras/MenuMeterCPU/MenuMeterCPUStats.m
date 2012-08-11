@@ -31,6 +31,7 @@
 ///////////////////////////////////////////////////////////////
 
 @interface MenuMeterCPUStats (PrivateMethods)
+uint32_t cpuCount;
 - (NSString *)cpuPrettyName;
 @end
 
@@ -186,16 +187,16 @@
 
 } // cpuSpeed
 
-- (uint32_t)numberOfCPUs {
+- (uint32_t)numberOfCPUs:(BOOL)combineLowerHalf {
 
-	return cpuCount;
+	return combineLowerHalf ? (cpuCount / 2) + 1 : cpuCount;
 
 } // numberOfCPUs
 
 - (NSString *)processorDescription {
 
 	return [NSString stringWithFormat:[localizedStrings objectForKey:kProcessorNameFormat],
-				[self numberOfCPUs], [self cpuName], [self cpuSpeed]];
+                   [self numberOfCPUs:NO], [self cpuName], [self cpuSpeed]];
 
 } // processorDescription
 
@@ -235,7 +236,7 @@
 
 } // loadAverage
 
-- (NSArray *)currentLoad: (BOOL) sorted  {
+- (NSArray *)currentLoad: (BOOL)sorted andCombineLowerHalf:(BOOL)combine {
 
 	// Read the current ticks
 	natural_t processorCount;
@@ -314,13 +315,39 @@
 
         loadUser = sortedUser;
         loadSystem = sortedSystem;
+
+        // Now reduce the least-utilized half of the CPUs into a single value
+        // if requested to do so.  Note that this only makes sense if 
+        if (combine) {
+            processorCount /= 2;
+            NSMutableArray *combinedUser = [NSMutableArray array];
+            NSMutableArray *combinedSystem = [NSMutableArray array];
+            for (natural_t i = 0; i < processorCount; i++) {
+                [combinedUser addObject: [loadUser objectAtIndex: 0]];
+                [combinedSystem addObject: [loadSystem objectAtIndex: 0]];
+                [loadUser removeObjectAtIndex: 0];
+                [loadSystem removeObjectAtIndex: 0];
+            }
+            float system = 0, user = 0;
+            for (natural_t i = 0; i < processorCount; i++) {
+                user += [[loadUser objectAtIndex: i] floatValue];
+                system += [[loadSystem objectAtIndex: i] floatValue];
+            }
+            system /= processorCount;
+            user /= processorCount;
+            [combinedUser addObject: [NSNumber numberWithFloat: user]];
+            [combinedSystem addObject: [NSNumber numberWithFloat: system]];
+            
+            loadUser = combinedUser;
+            loadSystem = combinedSystem;
+        }
     }
 
     // Build the loadInfo dictionaries from the (possibly sorted) user and system load values
 
 	NSMutableArray *loadInfo = [NSMutableArray array];
 
-	for (natural_t i = 0; i < processorCount; i++) {
+	for (natural_t i = 0; i < [loadUser count]; i++) {
 		[loadInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                                              [loadSystem objectAtIndex:i], @"system",
                                              [loadUser objectAtIndex:i], @"user",

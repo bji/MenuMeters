@@ -51,6 +51,11 @@
 // Prefs
 - (void)configFromPrefs:(NSNotification *)notification;
 
+// Utilities
+- (uint32_t)numberOfCPUsToDisplay;
+- (void)getCPULoadForCPU:(uint32_t)cpuNum
+            returnSystem:(float *)system
+              returnUser:(float *)user;
 @end
 
 
@@ -132,7 +137,7 @@
 	NSMenuItem *menuItem = nil;
 
 	// Add processor info which never changes
-	if ([cpuInfo numberOfCPUs] > 1) {
+	if ([cpuInfo numberOfCPUs:NO] > 1) {
 		menuItem = (NSMenuItem *)[extraMenu addItemWithTitle:[bundle localizedStringForKey:kMultiProcessorTitle value:nil table:nil]
 													  action:nil
 											   keyEquivalent:@""];
@@ -270,12 +275,12 @@
 	// Don't render without data
 	if (![loadHistory count]) return nil;
 
+    uint32_t cpuCount = [self numberOfCPUsToDisplay];
     // Horizontal CPU thermometer is handled differently because it has to
     // manage rows and columns in a very different way from normal horizontal
     // layout
     if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
         // Calculate the minimum number of columns that will be needed
-        uint32_t cpuCount = [cpuInfo numberOfCPUs];
         uint32_t rowCount = [ourPrefs cpuHorizontalRows];
         uint32_t columnCount = 
             ((cpuCount - 1) / [ourPrefs cpuHorizontalRows]) + 1;
@@ -289,23 +294,13 @@
             float xOffset = ((cpuNum / rowCount) * columnWidth) + 1.0f;
             float yOffset = (imageHeight -
                              (((cpuNum % rowCount) + 1) * thermometerHeight)) - 1.0f;
-            if ((cpuNum / rowCount) == 0) {
-                // Render the leftmost cap
-                NSBezierPath *leftCapPath = [NSBezierPath bezierPathWithRect:NSMakeRect(xOffset, yOffset, 1.0f, thermometerHeight - 1.0f)];
-                [currentImage lockFocus];
-                [fgMenuThemeColor set];
-                [leftCapPath fill];
-                [[NSColor blackColor] set];
-                [currentImage unlockFocus];
-            }
             [self renderHorizontalThermometerIntoImage:currentImage forProcessor:cpuNum atX:xOffset andY:yOffset withWidth:columnWidth andHeight:thermometerHeight];
         }
     }
     else {
         // Loop by processor
         float renderOffset = 0;
-        for (uint32_t cpuNum = 0; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-            
+        for (uint32_t cpuNum = 0; cpuNum < cpuCount; cpuNum++) {
             // Render graph if needed
             if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
                 [self renderHistoryGraphIntoImage:currentImage forProcessor:cpuNum atOffset:renderOffset];
@@ -372,6 +367,8 @@
 	[systemPath moveToPoint:NSMakePoint(offset, 0)];
 	[userPath moveToPoint:NSMakePoint(offset, 0)];
 
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
+
 	// Loop over pixels in desired width until we're out of data
 	int renderPosition = 0;
 	float renderHeight = (float)[image size].height - 0.5f;  // Save space for baseline
@@ -381,27 +378,14 @@
 
 		// Grab data
 		NSArray *loadHistoryEntry = [loadHistory objectAtIndex:renderPosition];
-		if (!loadHistoryEntry || ([loadHistoryEntry count] < [cpuInfo numberOfCPUs])) {
+		if (!loadHistoryEntry || ([loadHistoryEntry count] < numberOfCPUs)) {
 			// Bad data, just skip
 			continue;
 		}
 
 		// Get load at this position.
-		float system = [[[loadHistoryEntry objectAtIndex:processor] objectForKey:@"system"] floatValue];
-		float user = [[[loadHistoryEntry objectAtIndex:processor] objectForKey:@"user"] floatValue];
-		if ([ourPrefs cpuAvgAllProcs]) {
-			for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-				system += [[[loadHistoryEntry objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
-				user += [[[loadHistoryEntry objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
-			}
-			system /= [cpuInfo numberOfCPUs];
-			user /= [cpuInfo numberOfCPUs];
-		}
-		// Sanity and limit
-		if (system < 0) system = 0;
-		if (system > 1) system = 1;
-		if (user < 0) user = 0;
-		if (user > 1) user = 1;
+		float system, user;
+        [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
 
 		// Update paths (adding baseline)
 		[userPath lineToPoint:NSMakePoint(offset + renderPosition,
@@ -428,19 +412,21 @@
 } // renderHistoryGraphIntoImage:forProcessor:atOffset:
 
 - (void)renderSinglePercentIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atOffset:(float)offset {
+    
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
 
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
 
 	float totalLoad = [[[currentLoad objectAtIndex:processor] objectForKey:@"system"] floatValue] +
 						[[[currentLoad objectAtIndex:processor] objectForKey:@"user"] floatValue];
 	if ([ourPrefs cpuAvgAllProcs]) {
-		for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
+		for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
 			totalLoad += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue] +
 							[[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
 		}
-		totalLoad /= [cpuInfo numberOfCPUs];
+		totalLoad /= numberOfCPUs;
 	}
 	if (totalLoad > 1) totalLoad = 1;
 	if (totalLoad < 0) totalLoad = 0;
@@ -468,22 +454,10 @@
 
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < [self numberOfCPUsToDisplay])) return;
 
-	float system = [[[currentLoad objectAtIndex:processor] objectForKey:@"system"] floatValue];
-	float user = [[[currentLoad objectAtIndex:processor] objectForKey:@"user"] floatValue];
-	if ([ourPrefs cpuAvgAllProcs]) {
-		for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-			system += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
-			user += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
-		}
-		system /= [cpuInfo numberOfCPUs];
-		user /= [cpuInfo numberOfCPUs];
-	}
-	if (system > 1) system = 1;
-	if (system < 0) system = 0;
-	if (user > 1) user = 1;
-	if (user < 0) user = 0;
+    float system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
 
 	// Get the prerendered text and draw
 	NSImage *systemImage = [splitSystemPercentCache objectAtIndex:roundf(system * 100.0f)];
@@ -513,22 +487,10 @@
 
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < [self numberOfCPUsToDisplay])) return;
 
-	float system = [[[currentLoad objectAtIndex:processor] objectForKey:@"system"] floatValue];
-	float user = [[[currentLoad objectAtIndex:processor] objectForKey:@"user"] floatValue];
-	if ([ourPrefs cpuAvgAllProcs]) {
-		for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-			system += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
-			user += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
-		}
-		system /= [cpuInfo numberOfCPUs];
-		user /= [cpuInfo numberOfCPUs];
-	}
-	if (system > 1) system = 1;
-	if (system < 0) system = 0;
-	if (user > 1) user = 1;
-	if (user < 0) user = 0;
+    float system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
 
 	// Paths
 	float thermometerTotalHeight = (float)[image size].height - 3.0f;
@@ -554,24 +516,8 @@
 } // renderThermometerIntoImage:forProcessor:atOffset:
 
 - (void)renderHorizontalThermometerIntoImage:(NSImage *)image forProcessor:(uint32_t)processor atX:(float)x andY:(float)y withWidth:(float)width andHeight:(float)height {
-	// Current load (if available)
-	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
-
-	float system = [[[currentLoad objectAtIndex:processor] objectForKey:@"system"] floatValue];
-	float user = [[[currentLoad objectAtIndex:processor] objectForKey:@"user"] floatValue];
-	if ([ourPrefs cpuAvgAllProcs]) {
-		for (uint32_t cpuNum = 1; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
-			system += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
-			user += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
-		}
-		system /= [cpuInfo numberOfCPUs];
-		user /= [cpuInfo numberOfCPUs];
-	}
-	if (system > 1) system = 1;
-	if (system < 0) system = 0;
-	if (user > 1) user = 1;
-	if (user < 0) user = 0;
+    float system, user;
+    [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
 
 	// Paths
     NSBezierPath *rightCapPath = [NSBezierPath bezierPathWithRect:NSMakeRect((x + width) - 2.0f, y, 1.0f, height - 1.0f)];
@@ -604,7 +550,8 @@
 - (void)updateCPUActivityDisplay:(NSTimer *)timer {
 
 	// Get the current load
-	NSArray *currentLoad = [cpuInfo currentLoad:[ourPrefs cpuSortByUsage]];
+	NSArray *currentLoad = [cpuInfo currentLoad:[ourPrefs cpuSortByUsage]
+                                    andCombineLowerHalf:[ourPrefs cpuAvgLowerHalfProcs]];
 	if (!currentLoad) return;
 
 	// Add to history (at least one)
@@ -644,16 +591,18 @@
 
 - (void)updatePowerMate {
 
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
+
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
-	if (!currentLoad || ([currentLoad count] < [cpuInfo numberOfCPUs])) return;
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
 
 	double totalLoad = 0;
-	for (uint32_t cpuNum = 0; cpuNum < [cpuInfo numberOfCPUs]; cpuNum++) {
+	for (uint32_t cpuNum = 0; cpuNum < numberOfCPUs; cpuNum++) {
 		totalLoad += [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] doubleValue] +
 						[[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] doubleValue];
 	}
-	totalLoad /= [cpuInfo numberOfCPUs];
+	totalLoad /= numberOfCPUs;
 	if (totalLoad > 1) totalLoad = 1;
 	if (totalLoad < 0) totalLoad = 0;
 
@@ -820,20 +769,25 @@
 	}
 
 	// Fix our menu size to match our new config
+    int numberOfCPUs = [self numberOfCPUsToDisplay];
 	menuWidth = 0;
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * percentWidth);
-	}
-	if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * [ourPrefs cpuGraphLength]);
-	}
-	if ([ourPrefs cpuDisplayMode] & (kCPUDisplayThermometer |
-                                     kCPUDisplayHorizontalThermometer)) {
-		menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : [cpuInfo numberOfCPUs]) * kCPUThermometerDisplayWidth);
-	}
-	if (![ourPrefs cpuAvgAllProcs] && ([cpuInfo numberOfCPUs] > 1)) {
-		menuWidth += (([cpuInfo numberOfCPUs] - 1) * kCPUDisplayMultiProcGapWidth);
-	}
+    if ([ourPrefs cpuDisplayMode] & kCPUDisplayHorizontalThermometer) {
+        menuWidth = [ourPrefs cpuMenuWidth];
+    }
+    else {
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayPercent) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * percentWidth);
+        }
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayGraph) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * [ourPrefs cpuGraphLength]);
+        }
+        if ([ourPrefs cpuDisplayMode] & kCPUDisplayThermometer) {
+            menuWidth += (([ourPrefs cpuAvgAllProcs] ? 1 : numberOfCPUs) * kCPUThermometerDisplayWidth);
+        }
+        if (![ourPrefs cpuAvgAllProcs] && (numberOfCPUs > 1)) {
+            menuWidth += ((numberOfCPUs - 1) * kCPUDisplayMultiProcGapWidth);
+        }
+    }
 
 	// Handle PowerMate
 	if ([ourPrefs cpuPowerMate]) {
@@ -891,5 +845,38 @@
 	[extraView setNeedsDisplay:YES];
 
 } // configFromPrefs
+
+- (uint32_t)numberOfCPUsToDisplay
+{
+    return [cpuInfo numberOfCPUs:[ourPrefs cpuAvgLowerHalfProcs]];
+}
+
+- (void)getCPULoadForCPU:(uint32_t)cpuNum
+            returnSystem:(float *)system
+              returnUser:(float *)user
+{
+
+	// Current load (if available)
+	NSArray *currentLoad = [loadHistory lastObject];
+    int numberOfCPUs = [cpuInfo numberOfCPUs:YES];
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
+    
+    *system = [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
+    *user = [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
+    if ([ourPrefs cpuAvgAllProcs]) {
+        for (uint32_t i = 1; i < numberOfCPUs; i++) {
+            *system += [[[currentLoad objectAtIndex:i] objectForKey:@"system"] floatValue];
+            *user += [[[currentLoad objectAtIndex:i] objectForKey:@"user"] floatValue];
+        }
+        *system /= numberOfCPUs;
+        *user /= numberOfCPUs;
+    }
+
+	if (*system > 1) *system = 1;
+	if (*system < 0) *system = 0;
+	if (*user > 1) *user = 1;
+	if (*user < 0) *user = 0;
+}
+
 
 @end

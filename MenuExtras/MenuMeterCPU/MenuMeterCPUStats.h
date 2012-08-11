@@ -37,8 +37,6 @@
 	NSString							*cpuName;
 	// CPU clock speed
 	NSString							*clockSpeed;
-	// Number of CPUs
-	uint32_t							cpuCount;
 	// Mach host
 	host_name_port_t 					machHost;
 	// Default processor set
@@ -55,12 +53,12 @@
 // CPU info
 - (NSString *)cpuName;
 - (NSString *)cpuSpeed;
-- (uint32_t)numberOfCPUs;
+- (uint32_t)numberOfCPUs:(BOOL)combineLowerHalf;
 - (NSString *)processorDescription;
 
 // Load info
 - (NSString *)currentProcessorTasks;
 - (NSString *)loadAverage;
-- (NSArray *)currentLoad: (BOOL) sorted;
+- (NSArray *)currentLoad:(BOOL)sorted andCombineLowerHalf:(BOOL)combine;
 
 @end

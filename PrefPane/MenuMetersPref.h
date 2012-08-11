@@ -57,7 +57,10 @@
 	IBOutlet NSTextField			*cpuGraphWidthLabel;
 	IBOutlet NSSlider				*cpuHorizontalRows;
 	IBOutlet NSTextField			*cpuHorizontalRowsLabel;
+    IBOutlet NSSlider               *cpuMenuWidth;
+	IBOutlet NSTextField			*cpuMenuWidthLabel;
 	IBOutlet NSButton				*cpuAvgProcs;
+    IBOutlet NSButton               *cpuAvgLowerHalfProcs;
     IBOutlet NSButton               *cpuSortByUsage;
 	IBOutlet NSButton				*cpuPowerMate;
 	IBOutlet NSPopUpButton			*cpuPowerMateMode;
