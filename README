@@ -1,0 +1,62 @@
+This is an unofficial fork of MenuMeters intended to add some features that
+hopefully will be integrated into the main MenuMeters distribution, at which
+time this fork will be terminated.
+
+The features added are all CPU meters features:
+
+1. The user can choose to display CPU thermometers horizontally instead of
+   vertically.  This results in thinner, but longer, thermometers, which
+   allows for greater detail.  The CPU meters menu region is much more
+   efficiently used, with almost no extra decoration outside of the
+   thermometer bars themselves, and a minimum of whitespace.  I wanted to
+   use every available bit of space to get as much useful information as
+   I could.  Horizontal bars allow this in ways that vertical bars
+   cannot.
+
+2. The user can choose to 'sort CPUs by usage', which shows the highest
+   CPU usage percent of any core sorted first, then the second highest next,
+   etc.  The idea here is that when a process or set of processes is
+   running, the scheduler may move it around between CPUs, and without
+   sorting the CPUs by usage, the result is thermometers whose values sort
+   of jump around and are harder to get a read on.  With sorted thermometers,
+   a single process running at 100% CPU always shows up as the top bar
+   (unless the CPU timeslices the processor between more than once CPU,
+   which it occasionally does).  This makes the display much easier to read
+   and the overall load much easier to track.
+
+3. If the display mode is thermometers (vertical or horizontal), and CPU
+   sorting by usage is in effect, then the user can furthermore choose to
+   average the least utilized processors into a single thermometer.  This
+   is very similar to the already-existing option to average all CPUs into
+   a single thermometer, but this new option only averages the least
+   utilized half of the processors into a single thermometer, leaving the
+   most utilized half of the CPUs as individual bars.  The idea here is
+   that a hyperthreading-aware operating system (like Mac OS X) will always
+   prefer to schedule threads across cores, only scheduling two threads on
+   the same hyperthreading core via the two separate logical processors, if
+   all other physical cores are already busy.  The lowest utilized cores
+   should, under the vast majority of circumstances, represent the additional
+   logical cores associated with physical cores already in use by the
+   operating system.  A user may prefer to see all of those averaged into
+   a single bar since they don't represent the same degree of thread
+   execution as that of the 'real' physical cores.  This further de-clutters
+   the CPU usage display.  On my 4-core, 8-thread CPU, this option allows
+   me to see 5 bars instead of 8, with the corresponding increase in the
+   fidelity of the display of those bars due to the increased amount of room
+   that I then have to display them.
+
+Additionally, I have added a makefile to allow the project to be built by
+GNU make in addition to Xcode (I find working this way easier).
+
+This can be accomplished by a command like this:
+
+gmake -j9
+
+The resulting installer will be in build/dmgvolroot.
+
+Additionally, a complete DMG file containing the installer can be built
+by:
+
+gmake dmg
+
+The result will be in build/MenuMeters.dmg.
