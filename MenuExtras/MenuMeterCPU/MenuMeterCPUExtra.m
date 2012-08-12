@@ -383,9 +383,17 @@
 			continue;
 		}
 
-		// Get load at this position.
-		float system, user;
-        [self getCPULoadForCPU:processor returnSystem:&system returnUser:&user];
+        // Get load at this position.
+        float system = [[[loadHistoryEntry objectAtIndex:processor] objectForKey:@"system"] floatValue];
+        float user = [[[loadHistoryEntry objectAtIndex:processor] objectForKey:@"user"] floatValue];
+        if ([ourPrefs cpuAvgAllProcs]) {
+            for (uint32_t cpuNum = 1; cpuNum < numberOfCPUs; cpuNum++) {
+                system += [[[loadHistoryEntry objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
+                user += [[[loadHistoryEntry objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
+            }
+            system /= numberOfCPUs;
+            user /= numberOfCPUs;
+        }
 
 		// Update paths (adding baseline)
 		[userPath lineToPoint:NSMakePoint(offset + renderPosition,
