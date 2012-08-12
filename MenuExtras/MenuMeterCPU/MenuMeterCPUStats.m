@@ -292,6 +292,13 @@ uint32_t cpuCount;
         [loadSystem addObject:[NSNumber numberWithFloat:((float)system / (float)total)]];
 	}
 
+	// Copy the new data into previous
+	for (natural_t i = 0; i < [loadUser count]; i++) {
+		for (natural_t j = 0; j < CPU_STATE_MAX; j++) {
+			priorCPUTicks[i].cpu_ticks[j] = processorTickInfo[i].cpu_ticks[j];
+		}
+	}
+
     // Sort the load if necessary
     if (sorted == YES) {
         NSMutableArray *sortedUser = [NSMutableArray array];
@@ -317,27 +324,27 @@ uint32_t cpuCount;
         loadSystem = sortedSystem;
 
         // Now reduce the least-utilized half of the CPUs into a single value
-        // if requested to do so.  Note that this only makes sense if 
+        // if requested to do so.
         if (combine) {
             processorCount /= 2;
             NSMutableArray *combinedUser = [NSMutableArray array];
             NSMutableArray *combinedSystem = [NSMutableArray array];
             for (natural_t i = 0; i < processorCount; i++) {
-                [combinedUser addObject: [loadUser objectAtIndex: 0]];
-                [combinedSystem addObject: [loadSystem objectAtIndex: 0]];
-                [loadUser removeObjectAtIndex: 0];
-                [loadSystem removeObjectAtIndex: 0];
+                [combinedUser addObject: [loadUser objectAtIndex: i]];
+                [combinedSystem addObject: [loadSystem objectAtIndex: i]];
             }
             float system = 0, user = 0;
             for (natural_t i = 0; i < processorCount; i++) {
-                user += [[loadUser objectAtIndex: i] floatValue];
-                system += [[loadSystem objectAtIndex: i] floatValue];
+                natural_t loadIndex = processorCount + i;
+                user += [[loadUser objectAtIndex: loadIndex] floatValue];
+                system += [[loadSystem objectAtIndex: loadIndex] floatValue];
             }
             system /= processorCount;
             user /= processorCount;
             [combinedUser addObject: [NSNumber numberWithFloat: user]];
             [combinedSystem addObject: [NSNumber numberWithFloat: system]];
-            
+            [loadUser removeAllObjects];
+            [loadSystem removeAllObjects];
             loadUser = combinedUser;
             loadSystem = combinedSystem;
         }
@@ -353,13 +360,6 @@ uint32_t cpuCount;
                                              [loadUser objectAtIndex:i], @"user",
                                           nil]];
     }
-
-	// Copy the new data into previous
-	for (natural_t i = 0; i < processorCount; i++) {
-		for (natural_t j = 0; j < CPU_STATE_MAX; j++) {
-			priorCPUTicks[i].cpu_ticks[j] = processorTickInfo[i].cpu_ticks[j];
-		}
-	}
 
 	// Dealloc
 	vm_deallocate(mach_task_self(), (vm_address_t)processorTickInfo, (vm_size_t)(processorInfoCount * sizeof(natural_t)));
