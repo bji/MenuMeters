@@ -353,7 +353,6 @@
 														</set>
 														<string key="NSFrame">{{305, 63}, {53, 30}}</string>
 														<reference key="NSSuperview" ref="502156175"/>
-														<reference key="NSNextKeyView" ref="353612463"/>
 														<bool key="NSEnabled">YES</bool>
 														<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 														<bool key="NSIsBordered">YES</bool>
@@ -1203,25 +1202,24 @@
 															</object>
 															<int key="NSPeriodicDelay">400</int>
 															<int key="NSPeriodicInterval">75</int>
-															<object class="NSMenuItem" key="NSMenuItem" id="521705191">
-																<reference key="NSMenu" ref="152208561"/>
-																<string key="NSTitle">使用饼图</string>
-																<string key="NSKeyEquiv"/>
-																<int key="NSKeyEquivModMask">1048576</int>
-																<int key="NSMnemonicLoc">2147483647</int>
-																<int key="NSState">1</int>
-																<reference key="NSOnImage" ref="86372309"/>
-																<reference key="NSMixedImage" ref="612283957"/>
-																<string key="NSAction">_popUpItemAction:</string>
-																<reference key="NSTarget" ref="681809111"/>
-															</object>
+															<nil key="NSMenuItem"/>
 															<bool key="NSMenuItemRespectAlignment">YES</bool>
 															<object class="NSMenu" key="NSMenu" id="152208561">
 																<object class="NSMutableString" key="NSTitle">
 																	<characters key="NS.bytes">OtherViews</characters>
 																</object>
 																<array class="NSMutableArray" key="NSMenuItems">
-																	<reference ref="521705191"/>
+																	<object class="NSMenuItem" id="521705191">
+																		<reference key="NSMenu" ref="152208561"/>
+																		<string key="NSTitle">使用饼图</string>
+																		<string key="NSKeyEquiv"/>
+																		<int key="NSKeyEquivModMask">1048576</int>
+																		<int key="NSMnemonicLoc">2147483647</int>
+																		<reference key="NSOnImage" ref="86372309"/>
+																		<reference key="NSMixedImage" ref="612283957"/>
+																		<string key="NSAction">_popUpItemAction:</string>
+																		<reference key="NSTarget" ref="681809111"/>
+																	</object>
 																	<object class="NSMenuItem" id="257684903">
 																		<reference key="NSMenu" ref="152208561"/>
 																		<string key="NSTitle">使用条状图</string>
@@ -1257,6 +1255,7 @@
 																	</object>
 																</array>
 															</object>
+															<int key="NSSelectedIndex">-1</int>
 															<int key="NSPreferredEdge">3</int>
 															<bool key="NSUsesItemFromMenu">YES</bool>
 															<bool key="NSAltersState">YES</bool>
@@ -1535,7 +1534,6 @@
 														<string key="NSFrame">{{340, 118}, {53, 30}}</string>
 														<reference key="NSSuperview" ref="255345402"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="353612463"/>
 														<bool key="NSEnabled">YES</bool>
 														<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 														<bool key="NSIsBordered">YES</bool>
@@ -1676,7 +1674,6 @@
 																			<string key="NSFrame">{{200, 9}, {53, 30}}</string>
 																			<reference key="NSSuperview" ref="854237246"/>
 																			<reference key="NSWindow"/>
-																			<reference key="NSNextKeyView" ref="193382890"/>
 																			<bool key="NSEnabled">YES</bool>
 																			<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 																			<bool key="NSIsBordered">YES</bool>
@@ -2896,6 +2893,7 @@
 							<string key="NSFrame">{{-3, 0}, {600, 13}}</string>
 							<reference key="NSSuperview" ref="350683291"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="353612463"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="1024047345">
 								<int key="NSCellFlags">67108864</int>
@@ -2916,6 +2914,7 @@
 					<string key="NSFrameSize">{594, 618}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
+					<reference key="NSNextKeyView" ref="678164530"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{213.66399999999999, 32}</string>
@@ -5931,6 +5930,7 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="cpuAvgLowerHalfProcs">NSButton</string>
 						<string key="cpuAvgProcs">NSButton</string>
 						<string key="cpuDisplayMode">NSPopUpButton</string>
 						<string key="cpuGraphWidth">NSSlider</string>
@@ -5939,6 +5939,8 @@
 						<string key="cpuHorizontalRowsLabel">NSTextField</string>
 						<string key="cpuInterval">NSSlider</string>
 						<string key="cpuIntervalDisplay">NSTextField</string>
+						<string key="cpuMenuWidth">NSSlider</string>
+						<string key="cpuMenuWidthLabel">NSTextField</string>
 						<string key="cpuMeterToggle">NSButton</string>
 						<string key="cpuPercentMode">NSPopUpButton</string>
 						<string key="cpuPercentModeLabel">NSTextField</string>
@@ -5997,6 +5999,10 @@
 						<string key="versionDisplay">NSTextField</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="cpuAvgLowerHalfProcs">
+							<string key="name">cpuAvgLowerHalfProcs</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="cpuAvgProcs">
 							<string key="name">cpuAvgProcs</string>
 							<string key="candidateClassName">NSButton</string>
@@ -6027,6 +6033,14 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="cpuIntervalDisplay">
 							<string key="name">cpuIntervalDisplay</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="cpuMenuWidth">
+							<string key="name">cpuMenuWidth</string>
+							<string key="candidateClassName">NSSlider</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="cpuMenuWidthLabel">
+							<string key="name">cpuMenuWidthLabel</string>
 							<string key="candidateClassName">NSTextField</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="cpuMeterToggle">
