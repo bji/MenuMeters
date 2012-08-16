@@ -867,7 +867,11 @@
 	// Current load (if available)
 	NSArray *currentLoad = [loadHistory lastObject];
     int numberOfCPUs = [cpuInfo numberOfCPUs:YES];
-	if (!currentLoad || ([currentLoad count] < numberOfCPUs)) return;
+	if (!currentLoad || ([currentLoad count] < numberOfCPUs) ||
+        ([currentLoad count] <= cpuNum)) {
+        *system = 0, *user = 0;
+        return;
+    }
     
     *system = [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"system"] floatValue];
     *user = [[[currentLoad objectAtIndex:cpuNum] objectForKey:@"user"] floatValue];
